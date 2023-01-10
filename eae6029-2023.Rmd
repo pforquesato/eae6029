@@ -23,11 +23,11 @@ This is the first part of the basic sequence of econometric courses provided by 
 
 ### Content and readings
 
-1. **The ordinary least squares estimator:** asymptotic properties; conditional expectations and linear projections; inference and hypothesis testing; heteroskedasticity and clustered sampling. *Bibliography:* Hansen (2022): ch. 2 (up to 2.25), ch. 3 (up to 3.18), ch. 4, ch. 7.1-7.3 and 7.12-14, and ch. 9 (up to 9.10 and 9.20). [[Slides]](https://www.pedroforquesato.com/eae6029/eae6029-week-1.html) [[Exercise list]](https://www.pedroforquesato.com/files/eae6029-lista-1.html).
+1. **The ordinary least squares estimator:** asymptotic properties; conditional expectations and linear projections; inference and hypothesis testing; heteroskedasticity and clustered sampling. *Bibliography:* Hansen (2022): ch. 2 (up to 2.25), ch. 3 (up to 3.18), ch. 4, ch. 7.1-7.3 and 7.12-14, and ch. 9 (up to 9.10 and 9.20). [[Slides]](https://www.pedroforquesato.com/eae6029/eae6029-week-1.html) [[Exercise list]](https://www.pedroforquesato.com/eae6029/eae6029-lista-1.html).
 
-2. **Instrumental variables and causal effects:** identification: Rubin causal model and potential outcomes; omitted variable bias and measurement errors; properties of the estimator and two-stages least squares; average and local average treatment effects; control functions and specification tests. Regression in discontinuity design. *Bibliography:* Hansen (2022): ch. 12, ch. 21. [[Slides]](https://www.pedroforquesato.com/eae6029/eae6029-week-2.html) [[Exercise list]](https://www.pedroforquesato.com/files/eae6029-lista-2.html).
+2. **Instrumental variables and causal effects:** identification: Rubin causal model and potential outcomes; omitted variable bias and measurement errors; properties of the estimator and two-stages least squares; average and local average treatment effects; control functions and specification tests. Regression in discontinuity design. *Bibliography:* Hansen (2022): ch. 12, ch. 21. [[Slides]](https://www.pedroforquesato.com/eae6029/eae6029-week-2.html) [[Exercise list]](https://www.pedroforquesato.com/eae6029/eae6029-lista-2.html).
 
-3. **Panel data:** Pooled cross-sections and difference-in-differences; fixed effects and random effects models; first differencing and lagged dependent variables. *Bibliography:* Hansen (2022). ch. 17 and ch. 18. [[Slides]](https://www.pedroforquesato.com/eae6029/eae6029-week-3.html) [[Exercise list]](https://www.pedroforquesato.com/files/eae6029-lista-3.html).
+3. **Panel data:** Pooled cross-sections and difference-in-differences; fixed effects and random effects models; first differencing and lagged dependent variables. *Bibliography:* Hansen (2022). ch. 17 and ch. 18. [[Slides]](https://www.pedroforquesato.com/eae6029/eae6029-week-3.html) [[Exercise list]](https://www.pedroforquesato.com/eae6029/eae6029-lista-3.html).
 
 The textbook mentioned above used for this course is:
 
