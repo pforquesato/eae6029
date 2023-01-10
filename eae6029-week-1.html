@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>EAE-6029: Econometrics I</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Pedro Forquesato http://www.pedroforquesato.com Sala 217/FEA2 - pforquesato@usp.br" />
+    <script src="libs/header-attrs-2.19/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# EAE-6029: Econometrics I
+]
+.author[
+### Pedro Forquesato<br/><a href="http://www.pedroforquesato.com" class="uri">http://www.pedroforquesato.com</a><br/>Sala 217/FEA2 - <a href="mailto:pforquesato@usp.br" class="email">pforquesato@usp.br</a>
+]
+.institute[
+### Departamento de Economia<br/>Universidade de São Paulo
+]
+.date[
+### 2023/1 - Topic 1: Ordinary Least Squares
+]
+
+---
+
+class: inverse, middle, center
+
+
+
+# Course logistics
+
+---
+class: middle
+ 
+&lt;img src="figs/syllabus2.jpg" width="75%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle
+## Evaluation
+
+Three (3) lists of  exercises, graded, **worth 10% of final grade each** &amp;mdash; the lists will mimic the exam, with 10 questions, five theoretical/analytical, five an applied exercise 
+
+One exam, worth **70% of the final grade**, based on the lists and class material: 5 points applied/interpretative, 1 question from the list with small changes, 1 new analytical question
+
+
+If final grade `\(\geq\)` 60%, letter grade B or more, if 60% &gt; final grade `\(\geq\)` 50% letter grade C, else: *second evaluation*, then if reaval &gt; 50%, letter grade C 
+
+---
+class: middle, center, inverse
+
+# Introduction
+
+---
+class: middle
+## Econometrics
+
+&gt; [Econometric] Society, in Section I of the Constitution, which reads: “The Econometric Society is an international society for the advancement of &lt;mark&gt;economic theory in its relation to statistics and mathematics&lt;/mark&gt;.... Its main object shall be to promote studies that aim at a &lt;mark&gt;unification of the theoretical-quantitative and the empirical-quantitative approach to economic problems&lt;/mark&gt;....”
+
+Econometrics is the study of how theoretical and empirical analysis relate to each other &amp;mdash; the difference between statistics and econometrics is that the latter is **(economic) model-based**
+
+---
+class: middle
+## Econometric approaches
+
+The original concept of econometrics by Haavelmo was what we today name the **structural approach**: to develop explicit *stochastic models* of a economy and estimate them empirically
+
+Since these models rarely are linear in nature, you will see more about them in EAE6030: Econometrics II (and OI) &amp;mdash; related, but different, is the *calibration approach* common in macro
+
+Beginning in the 90s, applied economists started to question identification assumptions in econometric models, and wanted to "take the con out of economics" &amp;mdash; this led to the **credibility revolution** [AP10]
+
+---
+class: middle
+## Reduced-form approach
+
+The search for better sources of identification led to the creation of new econometric methods, that no longer estimate stochastic models, but "reduced-form" effects of policies
+
+With time, this became known as *treatment evaluation* &amp;mdash; but these methods are *not* model-free, as they depend on assumptions about the world for **identification**: the main topic of this course
+
+The simplest way to determine causal relations is to use *experiments* &amp;mdash; sadly, most economic data sets are *observational* &amp;mdash; still, economists can leverage changes in policy with plausibly causal effects: *quasi-experimental* analysis
+
+---
+class: middle
+## Model and estimation
+
+In any case, it is always essential to separate what is the **econometric model** and what is the **estimation method**
+
+Consider a model of income `\(Y\)` as a function of education `\(X_k\)` and unobservables `\(U\)` (the *Mincerian regression*): `$$Y = \beta X_k + U$$`
+
+Often people call this model an "OLS model", but that is a conceptual error! This is a **linear regression model**, that can be *estimated* by ordinary least squares (as well as many other methods!)
+
+---
+class: middle
+ 
+&lt;img src="figs/eae6029-1-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+[HV07] separate three different tasks of empirical analysis: theory, identification, and estimation &amp;mdash; all essential parts of econometrics, and that should not be confused with each other
+
+---
+class: middle
+## Notation
+
+Lower case letters, such as `\(x\)`, `\(y\)`, or `\(a\)`, denote *deterministic* values or vectors, with bold (e.g. `\(\mathbf{x}\)`) being vectors &amp;mdash; *except* for the errors `\(e\)`, which are random variables, but common usage (as in the textbook) is to denote it in lower case
+
+Upper case letters: `\(X\)`, `\(Y\)` denote *random* variables or vectors &amp;mdash; upper case bold letters, such as `\(\mathbf{A}\)`, denote matrices
+
+Greek letters denote parameters: `\(\beta\)`, `\(\gamma\)`, `\(\sigma\)`... &amp;mdash; estimators of these parameters are denoted by `\(\hat{\beta}\)`, `\(\tilde{\beta}\)`, etc
+
+As standard in econometrics, all vectors are column vectors, therefore an usual linear regression model has the form of `\(Y_{1\times1} = X_{k\times1}^{\prime}\beta_{k\times1} + U_{1\times1}\)`
+
+
+---
+class: middle
+## Preliminaries
+
+Let `\((X_i, Y_i)_{i = 1,..., N}\)` be a *sample* from a **data-generating process** `\(F(X, Y)\)` if all `\((X_i, Y_i)\)` are identically distributed by `\(F\)` &amp;mdash; this assumption we will make throughout
+
+If, additionally, `\((X_i, Y_i)_i\)` are *mutually independent* (by that we mean `\(X_i \perp \!\!\! \perp X_j,\ \forall i,j\)`, and the same for `\(Y\)`), then we call this a **i.i.d sample**, or simply a **random sample**
+
+Real world samples usually are *not* i.i.d. samples, since observations are correlated among each other, as we will see sometimes along the course &amp;mdash; but otherwise stated, we assume we are working with random samples
+
+---
+class: middle, center, inverse
+
+# Conditional expectation and linear projections (ch. 2)
+
+---
+class: middle
+## Conditional expectation
+
+A **conditional expectation** `\(\mathbb{E}\left[ Y | X = a \right] = \int y f_{Y|X}(y | X = a)dy\)` is a *number* (a mean). Varying the conditional, we get a *function* `\(m(x) \equiv \mathbb{E} \left[ Y | X = x \right]\)`
+
+This is called the **conditional expectation function** (CEF), and it is a deterministic (not random) function of `\(x \in R^K\)`, given `\(f_{Y|X}\)`
+
+If we condition the expectation on the *random variable* `\(X\)`, `\(\mathbb{E} \left[ Y | X\right]\)`, then we get *another random variable*, since functions of random variables are random variables themselves
+
+---
+class: middle
+ 
+&lt;img src="figs/eae6029-1-2.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+Conditional expectation of log wages on sex = female and education = 10, `\(\mathbb{E} \left[ \ln \text{wage} | \text{sex} = \text{female}, \text{education} = 10 \right] = 2.4\)`, is a number &amp;mdash; the **function** of education, however, fixed sex, is plotted in the graph: `\(m(x) \equiv \mathbb{E} \left[ \ln \text{wage} | \text{sex} = \text{female}, \text{education} = x \right]\)`
+
+---
+class: middle
+ 
+&lt;img src="figs/eae6029-1-3.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+For different levels of experience, we see the densities of observed wages (in 3d, at (a), and 2d, at (b)) &amp;mdash; the CEF takes for each level of fixed experience the mean of this distribution (the solid line in a): estimating this CEF is a large part of modern econometrics (note in passing that in this case it is not linear)
+
+---
+class: middle
+## Properties of expectations
+
+One of the most fundamental properties of expectations is the **Law of Iterated Expectations (LIE)**: If `\(\mathbb{E}[Y] &lt; \infty\)`, then
+
+`$$\mathbb{E} \left[ \mathbb{E} \left[ Y | X \right] \right] = \mathbb{E} \left[ Y \right]$$`
+
+Or in its (slightly) more general form: `\(\mathbb{E} \left[ \mathbb{E} \left[ Y | X_1, X_2 \right] | X_1 \right] = \mathbb{E} \left[ Y | X_1 \right]\)`
+
+The 2nd part of the **Conditioning Theorem** is a direct application of LIE: 
+`$$\mathbb{E} \left[ g(X) Y | X \right] = g(X)\mathbb{E} \left[ Y | X\right]\text{, and}$$`
+`$$\mathbb{E} \left[ g(X) Y \right] = \mathbb{E} \left[ g(X)\mathbb{E} \left[ Y | X\right] \right]$$`
+
+---
+class: middle
+## The CEF error
+
+We can **define** the CEF error `\(e\)` as `\(e \equiv Y - \mathbb{E} \left[Y | X \right]\)`, and therefore `\(Y = \mathbb{E} \left[ Y | X \right] + e\)` is *always* a valid form for a random variable `\(Y\)`
+
+Another property of the CEF error is that **by definition** it has an expected value of zero: `$$\mathbb{E} \left[e | X \right] = \mathbb{E} \left[Y - \mathbb{E} \left[Y | X \right] | X \right] = \mathbb{E} \left[Y | X \right] - \mathbb{E} \left[\mathbb{E} \left[Y | X \right] | X \right] = 0$$`
+
+And using the LIE, `\(\mathbb{E} \left[e \right] = \mathbb{E} \left[ \mathbb{E} \left[e | X \right]\right] = \mathbb{E} \left[0\right] = 0\)` &amp;mdash; worth noting that so is `\(\mathbb{E} \left[h(X) e \right] = 0\)` for any function `\(h\)` of the regressors `\(X\)` 
+
+---
+class: middle
+## The mean independence assumption
+
+Finally, and very importantly, if there is a function `\(m(X)\)` such that:
+
+1. `\(Y = m(X) + e\)`, and 
+2. `\(\mathbb{E} \left[ e | X \right] = 0,\)` (**mean independence**)
+
+then `\(m(X) = \mathbb{E} \left[ Y | X \right]\)` &amp;mdash; once again, if `\(m(X)\)` is the CEF, (1) and (2) are not assumptions: they hold *by definition*
+
+Worth mentioning that mean independence is *not* independence: heteroskedastic errors imply dependence, for example, while they do not contradict mean independence
+
+---
+class: middle
+## The CEF as the best predictor
+
+So, most of econometrics is about estimating the conditional expectation function (CEF) &amp;mdash; but why do we care about it?
+
+If we want a predictor to minimize the **mean quadratic error** (MQE) `\(\mathbb{E} \left[ \left(Y - g(X)\right)^2 \right]\)`, then the **best predictor** is the CEF
+
+Of course, it still remains open the question of *estimating* the CEF: we know from Stat that if CEF is linear, the best *unbiased* estimator is OLS (BLUE), but we might prefer in some cases a *biased* estimator to reduce MQE
+
+---
+class: middle
+## The regression variance
+
+The squared CEF error `\(\sigma^2 \equiv \mathbb{E}\left[e^2\right] = \text{Var}(e)\)` is the **variance of the regression error**, and measures the magnitude of *unexplained variation* of `\(Y\)`, given `\(X\)`
+
+`\(\sigma^2\)` depends on `\(X\)`: if we add regressors, we can never explain less of the variance (at worst, the aditional regressors are useless, never worse than nothing) &amp;mdash; this is reflected in the following important inequality:
+
+`$$\text{Var}(Y) \geq \text{Var} \left[ Y - \mathbb{E} \left[ Y | X_1 \right] \right] \geq \text{Var} \left[ Y - \mathbb{E} \left[ Y | X_1, X_2 \right]\right]$$`
+
+---
+class: middle
+## Conditional variance
+
+Even more important is the **conditional variance** of `\(Y\)`, or `\(e\)`, which is the variation of the marginal density of `\(Y\)` when conditioned on `\(X = x\)`:
+
+`$$\sigma^2(x) \equiv \text{Var} (Y | X = x) = \mathbb{E} \left[ \left( Y - \mathbb{E} \left[ Y | X = x \right] \right)^2 | X = x \right]$$` 
+$$ = \mathbb{E} \left[ e^2 | X = x \right] = \text{Var} (e | X=x) = \sigma^2 (x)$$
+An important result is the **variation decomposition theorem**: `$$\text{Var}(Y) = \mathbb{E} \left[ \text{Var} (Y | X) \right] + \text{Var} \left( \mathbb{E} \left[ Y | X \right] \right)$$`
+
+---
+class: middle
+## Homoskedasticity and heteroskedasticity
+
+If the conditional variance does not depend on `\(x\)`, `\(\sigma^2 (x) = \sigma^2\)`, we call the regression error **homoskedastic** &amp;mdash; otherwise, it is **heteroskedastic**
+
+The general case in empirical applications is to have heteroskedastic errors: homoskedasticity is an assumption of only theoretical interest (for simplicity of calculation)
+
+&gt; "Always use reg y x, robust in STATA" 
+
+In practice, even worse, we often cannot assume i.i.d. samples: we have autocorrelation or clustered observations &amp;mdash; we talk about these later in the course
+
+---
+class: middle
+## Partial effects
+
+We saw that the CEF is the *best predictor* of an outcome `\(Y\)`, but in economics that is usually not what we are interested in: we do not want to *predict* the world, we want to *understand* the world
+
+That is to understand how changes in a variable `\(X_k\)` affect the outcome `\(Y\)`: the **partial effect** `\(\nabla_k m(x)\)`, which equals `\(\partial m(x) / \partial x_k\)` if `\(x_k\)` is continuous, and `\(m(x_1,..., 1, ..., x_K) - m(x_1, ..., 0, ... x_K)\)` if binary
+
+The partial effect fixes all the other covariates `\(X_j, j\neq k\)` (**ceteris paribus**), but it does *not* fixes unobservables (such as ability or preferences) or variables not included in the regression (*omitted variables*)
+
+---
+class: middle
+## Linear regression model
+
+The **linear regression model** is given by the following assumptions: (1) `\(Y = X^{\prime}\beta + e\)`, (2) `\(\mathbb{E} \left[e | X \right] = 0\)`, where the first element of the `\(k \times 1\)` random vector `\(X\)` is `\(1\)`
+
+In the linear model, the partial effects `\(\nabla m(x) = \beta\)`, but that is *not* true in the general case &amp;mdash; if we have nonlinear effects or interactions, then the partial effects (with economic interpretation) change
+
+If `\(K\)` is low-dimensional, we could approximate reasonably well general non-linear CEFs using nonlinear effects &amp;mdash; but in general, we can only identify the CEF if the linear regression model is correctly specified
+
+---
+class: middle
+## Best linear predictor
+
+This best linear predictor is the one that minimizes the mean squared error: `$$\mathbb{E} \left[ \left( Y - X^{\prime} \beta \right)^2 \right]$$`
+
+If `\(\mathbb{E} \left[ XX^{\prime} \right]\)` is positive definite (invertible, columns linearly independent), then the best linear predictor is the **linear projection**:
+
+`$$\mathcal{P}(Y|X) \equiv X^{\prime}\beta_{\text{LP}} = X^{\prime} \mathbb{E} \left[ X X^{\prime} \right]^{-1} \mathbb{E} \left[ XY \right]$$`
+`$$\Rightarrow \beta_{\text{LP}} =  \mathbb{E} \left[ X X^{\prime} \right]^{-1} \mathbb{E} \left[ XY \right]$$`
+
+---
+class: middle
+## Properties of the linear projection model
+
+As we will see later this class, this is the linear algebra projection of `\(Y\)` in the linear subspace generated by `\(X\)`. Further:
+
+1. The **projection error** `\(e_{\text{P}}\)` exists, and it equals the CEF error `\(e\)` if (and only if!) the CEF is linear
+2. Nonetheless, it always satisfies `\(\mathbb{E} \left[ Xe_{\text{P}} \right] = 0\)`, and therefore `\(\mathbb{E}\left[e_{\text{P}} \right] = 0\)` if there is an intercept in `\(X\)`
+3. By (2), we have that `\(\text{Cov}(X, e_{\text{P}}) = 0\)` &amp;mdash; but it is **not** true in general that `\(\mathbb{E} \left[ e_{\text{P}} | X \right] = 0\)`
+
+
+---
+class: middle
+## Best linear approximation
+
+Given that there is no reason to presume a linear CEFs in real life applications, what is the use of the linear regression? The usual justification is that the linear projection is the **best linear approximation** of the CEF
+
+If we try to find `\(\beta\)` such that it minimizes the MQ difference between the CEF and a linear functional, namely `\(\mathbb{E} \left[ \left( \mathbb{E} \left[ Y | X \right]- X^{\prime}\beta \right)^2  \right]\)`, then once again we find that `\(\beta\)` is the **linear projection coefficient**
+
+So identifying `\(\beta_{LP}\)` will always give us the best possible approximation of the CEF that we can reach in the realm of linear coefficients models
+
+---
+class: middle
+ 
+&lt;img src="figs/eae6029-1-4.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+Economists frequently hide behind the best linear approximation as a justification for using linear models regardless of the problem, but the difference in fit (and therefore results) can be substantive: in (b), a quadratic term can fit the data well, but in (a) only non-linear models can do well
+
+---
+class: middle, center, inverse
+
+# Algebra of least squares (ch. 3)
+
+---
+class: middle
+## Ordinary least squares
+
+The far and away most common and important estimator in econometrics is the **ordinary least squares** &amp;mdash; that is the *plug-in estimator* that subsitutes the population moments for the same sample moments (**analogy principle**)
+
+Consider a random sample of size `\(n\)`, then the OLS estimator of the linear projection is:
+
+`$$\widehat{\beta}_{\text{OLS}} = \left( \sum_{i=1}^{n}X_iX_i^{\prime}\right)^{-1} \left(\sum_{i=1}^{n} X_iY_i\right)$$`
+The OLS estimator is the one that minimizes the **sum of squared errors** (which divided by `\(1/n\)` is the estimator of the MQE) `\(\sum_{i=1}^{n} \left( Y_i - X_i^{\prime}\beta \right)^2\)`
+
+---
+class: middle
+ 
+&lt;img src="figs/eae6029-1-5.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+The OLS coefficient minimizes the sum of squared errors, as in (b), which are the deviation of the observations to the linear subspace generated by the linear regression coefficients, shown in (a)
+
+---
+class: middle
+## Ordinary least squares
+
+Having `\(\widehat{\beta}\)`, it is immediate to get the **fitted value** `\(\widehat{Y}_i = X_i^{\prime}\widehat{\beta}\)` and the **residual** `\(\widehat{e}_i = Y_i - \widehat{Y}_i = Y_i - X_i^{\prime}\widehat{\beta}\)` &amp;mdash; note that the residual is a *sample statistic*, which differs from the *error*, which is a *model variable*
+
+Analogously to the population case, we have that `\(\sum_{i=1}^n X_i \widehat{e}_i = 0\)`
+
+Stacking the sample together, we have the matrix notation of a regression model: `\(\mathbf{Y}_{n\times1} = \mathbf{X}_{n\times k}\beta_{k\times 1} + \mathbf{e}_{n\times 1}\)`. Now, the OLS estimator is given by: `$$\widehat{\beta}_{\text{OLS}} = (\mathbf{X}^{\prime}\mathbf{X})^{-1}\mathbf{X}^{\prime}\mathbf{Y}$$`
+
+
+---
+class: middle
+## Projection matrix
+
+In what follows, we will work with the matrix notation, omitting the boldface. Consider first the **projection matrix**, which projects vectors `\(Z\)` into the *column space* of `\(X\)`:
+
+`$$P = X (X^{\prime}X)^{-1} X^{\prime}$$`
+Clearly, if `\(Z\)` is already in the column space of `\(X\)`, say, `\(Z = X\Gamma\)` for some `\(\Gamma\)`, then the projection should not move `\(Z\)` at all! Indeed, that is true:
+
+`$$PZ = PX\Gamma = X (X^{\prime}X)^{-1} X^{\prime}X\Gamma = X\Gamma = Z$$`
+
+---
+class: middle
+## Projection matrix
+
+For the same intuition, we should have that since `\(PZ\)` is in the column space of `\(X\)`, `\(P(PZ)\)` does not move it &amp;mdash; this is indeed true, as the projection matrix `\(P\)` is **idempotent**: `\(PP = P\)`
+
+The projection matrix is important because OLS is nothing more than the projection of `\(Y\)` on the column space of `\(X\)`, generating the fitted values `\(\widehat{Y} = PY\)` (for this reason, `\(P\)` is also known as **hat matrix**)
+
+`\(P\)` also has some cool linear algebra properties: it is symmetric: `\(P = P^{\prime}\)`; `\(tr(P) = rank(P) = k\)`, and it has `\(k\)` eigenvalues of `\(1\)` and `\(n-k\)` of zero (this part not surprising, since rank is `\(k\)`)  
+
+
+---
+class: middle
+ 
+&lt;img src="figs/eae6029-1-6.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+The `\(k\)` size `\(n\times 1\)` vectors `\(X_l\)` form a `\(k\)`-dimension subspace (*range space*) `\(\mathcal{R}(\mathbf{X})\)` in `\(\mathbb{R}^{n}\)`: OLS is the *orthogonal* projection of the `\(n\)`-dimensional vector `\(Y\)` on this subspace `\(\mathcal{R}(\mathbf{X})\)`
+
+
+---
+class: middle
+## Annihilator matrix
+
+The **annihilator matrix** is defined as `\(M = I_{N} - P\)`. It is called that because it "annihilates" any `\(Z\)` in the range of `\(X\)`:
+
+`$$MZ = MX\Gamma = (I_N - P)X\Gamma = X\Gamma - X(X^{\prime}X)^{-1}X^{\prime}X\Gamma = X\Gamma - X\Gamma = 0$$`
+Namely, `\(X\)` and `\(M\)` are orthogonal. While `\(P\)` creates fitted values, `\(M\)` creates *residuals*: `\(MY = (I_N - P)Y = Y - \widehat{Y} = \widehat{e}\)`
+
+Like the projection matrix, the annihilator is idempotent and symmetric, but with rank (and trace) `\(n - k\)`: `\(M\)` and `\(P\)` form a basis of `\(\mathbb{R}^N\)`
+
+---
+class: middle
+## Regression components
+
+Let's finish this linear algebra incursion by partitioning `\(X\)` in 2 subsets, such that `\(Y = X_1 \beta_1 + X_2 \beta_2 + e\)`: often we will want to estimate `\(\beta_2\)`, but running the full `\(k\)`-dimensional regression is unfeasible
+
+We still can do so by minimizing sequentially regarding `\(\beta_1\)` and `\(\beta_2\)`, keeping the other fixed (see textbook) &amp;mdash; if we define `\(M_2 = I_N - X_2 (X_2^{\prime}X_2)^{-1}X_2^{\prime}\)`, then we have that the linear projection (OLS) coefficient satisfies:
+
+`$$\widehat{\beta}_2 = \arg \min_{\beta_2} (Y - X_2\beta)^{\prime}M_1(Y - X_2\beta) = (X_2^{\prime}M_1X_2)^{-1}X_2^{\prime}M_1Y$$`
+
+---
+class: middle
+## Frisch-Waugh-Lovell Theorem
+
+Since `\(M_1\)` is idempotent and symmetric,
+
+`$$\widehat{\beta}_2 = (X_2^{\prime}M_1X_2)^{-1}X_2^{\prime}M_1Y = ((X_2^{\prime}M_1^{\prime})(M_1X_2))^{-1}(X_2^{\prime}M_1^{\prime})(M_1Y)$$`
+
+`$$\therefore \widehat{\beta}_2 = (\widetilde{X}_2^{\prime}\widetilde{X}_2)^{-1}\widetilde{X}_2^{\prime}\widehat{e}_1,$$`
+
+where `\(\widetilde{X}_2 = M_1 X_2\)` and `\(\widehat{e}_1 = M_1 Y\)` (remember, `\(M\)` is the annihilator): and thus `\(\widehat{\beta}_2\)` is the coefficient of a regression of `\(\widetilde{X}_2\)` on `\(\widehat{e}_1\)`
+
+---
+class: middle
+## Frisch-Waugh-Lovell Theorem
+
+Now, since `\(M_1\)` is the annihilator matrix of `\(X_1\)`, that generates *residuals* of a regression on `\(X_1\)`, we have that `\(\widetilde{X}_2\)` is the residuals of `\(X_2\)` on `\(X_1\)`, and `\(\widehat{e}_1\)` the residuals of `\(Y\)` on `\(X_1\)`
+
+This leads to the fundamental **Frisch-Waugh-Lovell Theorem**: to estimate `\(\widehat{\beta}_2\)`,
+
+1. Regress `\(Y\)` on `\(X_1\)` and obtain residuals `\(\widehat{e}_1\)`
+2. Regress `\(X_2\)` on `\(X_1\)` and obtain residuals (of size `\(N\times K_1\)`) `\(\widetilde{X_2}\)`
+3. Regress `\(\widehat{e}_1\)` on `\(\widetilde{X_2}\)` and obtain `\(\widehat{\beta}_2\)` and `\(\widehat{e}\)`
+
+---
+class: middle, center, inverse
+
+# Statistical properties of OLS (ch. 4)
+
+---
+class: middle
+## Expected value of OLS
+
+An estimator `\(\widehat{\theta}\)` for `\(\theta\)` is **unbiased** if `\(\mathbb{E}\left[ \widehat{\theta} \right] = \theta\)`
+
+Consider again the linear regression *model*: `\(Y = X^{\prime}\beta + e\)` and `\(\mathbb{E} \left[ e | X \right] = 0\)`. Then if the second moments are finite and `\(XX^{\prime}\)` invertible, we have that the **OLS estimator is unbiased**:
+
+`$$\mathbb{E} \left[ \widehat{\beta} | X \right] = \mathbb{E} \left[ \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime}\mathbf{Y}\ |\ \mathbf{X} \right]$$`
+
+
+`$$=  \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime} \mathbb{E} \left[ \mathbf{Y} | \mathbf{X} \right] = \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime}\mathbf{X}\beta = \beta$$`
+
+
+---
+class: middle
+## Expected value again
+
+Another way of seeing this is that: 
+
+`$$\widehat{\beta} = \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime}\left(\mathbf{X}\beta + \mathbf{e} \right)$$`
+`$$\therefore \widehat{\beta} - \beta = \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime}\mathbf{e}$$`
+This expression of the deviation between the OLS estimator and the true parameter, which has conditional expectation zero, will be important when deriving the assymptotic properties of the OLS later in this class
+
+Finally, by the **LIE**, `\(\mathbb{E} \left[ \widehat{\beta} \right] = \mathbb{E} \left[ \mathbb{E} \left[ \widehat{\beta} | X \right]\right] = 0\)` `\(\blacksquare\)`
+
+---
+class: middle
+## Conditional variance
+
+The **conditional variance** of a random vector `\(Z\)` given `\(X\)` is: 
+`$$\text{Var} \left[ Z | X \right] \equiv \mathbb{E} \left[ \left(Z - \mathbb{E} \left[Z | X \right] \right)\left(Z - \mathbb{E} \left[Z | X \right] \right)^{\prime} | X \right]$$` 
+
+$$= \mathbb{E} \left[ ZZ^{\prime} | X \right] - \mathbb{E} \left[ Z | X \right]\mathbb{E} \left[ Z| X \right]^{\prime} $$
+Let's define `\(\mathbf{\Omega} \equiv \text{Var}\left[\mathbf{e} | \mathbf{X}\right] = \mathbb{E} \left[\mathbf{e}\mathbf{e}^{\prime} | \mathbf{X}\right]\)`: since the sample is i.i.d., it is a diagonal matrix, with `\(i\)` element `\(\sigma_i^2\)`
+
+If the sample is homoskedastic, then `\(\sigma_i^2\)` is the same for all `\(i\)`, and `\(\mathbf{\Omega} = \mathbf{I_N} \sigma^2\)`
+
+---
+class: middle
+## Conditional variance of OLS estimator
+
+Given that `\(\widehat{\beta} = \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime}\mathbf{Y}\)`, that the conditional variance of `\(Y\)` and `\(e\)` is the same, and the *bilinearity of variance*, we have that the **variance of OLS estimator** is:
+
+`$$\text{Var}\left[ \widehat{\beta} | \mathbf{X} \right] = \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime} \mathbf{\Omega} \mathbf{X} \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1}$$`
+In the (again, rare) case of homoskedasticity, `\(\mathbf{\Sigma} = \mathbf{I_N} \sigma^2\)` implies that the variance simplifies to `\(\text{Var}\left[ \widehat{\beta} | \mathbf{X} \right] = \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \sigma^2\)`
+
+---
+class: middle
+## Variance of OLS estimator
+
+But again, we want to go from the conditional variance to the unconditional one &amp;mdash; here, instead of LIE we use the **variance decomposition theorem**:
+
+`$$\text{Var} \left( \widehat{\beta} \right) = \mathbb{E} \left[ \text{Var} (\widehat{\beta} | X) \right] + \text{Var} \left( \mathbb{E} \left[ \widehat{\beta} | X \right] \right)$$`
+`$$= \mathbb{E} \left[ \text{Var} (\widehat{\beta} | X) \right] = \mathbb{E} \left[ \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime} \mathbf{\Omega} \mathbf{X} \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \right]$$`
+
+Where from first to second line we use that the conditional expectation is a constant `\(\beta\)` (unbiased) &amp;mdash; note that the variance of our estimator is unknown (a population moment): it can only be estimated
+
+---
+class: middle
+## Gauss-Markov Theorem
+
+Consider the estimation of the linear regression model, and assume further that the regression error is homoskedastic
+
+Then, the **Gauss-Markov Theorem** states that if an estimator `\(\widetilde{\beta}\)` is *unbiased* for `\(\beta\)`, then: `$$\text{Var} \left[ \widetilde{\beta} | \mathbf{X} \right] \geq \sigma^2 \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1}$$`
+
+That is, OLS is **efficient**, or as often put, the **B**est (**L**inear) **U**nbiased **E**stimator (BLUE) &amp;mdash; but note that we still might get better results using *biased* estimators!
+
+---
+class: middle
+## Generalized Least Squares
+
+The Gauss-Markov assumed homoskedastic errors &amp;mdash; if errors are heteroskedastic or autocorrelated, we can do better than OLS (in terms of *efficiency*!): now the lower bound (Aitken, 1935) is: `$$\text{Var} \left[ \widetilde{\beta} | \mathbf{X} \right] \geq \left( \mathbf{X}^{\prime}\mathbf{\Omega}^{-1}\mathbf{X}\right)^{-1}$$`
+
+If we know `\(\mathbf{\Omega}\)`, we can reach this lower bound by weighting observations by `\(\mathbf{\Omega}^{-1/2}\)`: this is the **generalized least squares**
+
+---
+class: middle
+## Generalized Least Squares
+
+Namely, if `\(\widetilde{X} = \mathbf{\Omega}^{-1/2}X\)`, `\(\widetilde{Y} = \mathbf{\Omega}^{-1/2}Y\)`, and `\(\widetilde{e} = \mathbf{\Omega}^{-1/2}e\)`, then the GLS estimator for linear regression models is:
+
+`$$\widetilde{\beta}_{\text{GLS}} = \left( \mathbf{\widetilde{X}}^{\prime}\mathbf{\widetilde{X}}\right)^{-1} \mathbf{\widetilde{X}}^{\prime}\mathbf{\widetilde{Y}} =  \left( \mathbf{X}^{\prime}\mathbf{\Omega}^{-1}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime}\mathbf{\Omega}^{-1}\mathbf{Y}$$`
+The GLS estimator in **unbiased** with variance that reaches the lower bound:
+
+`$$\text{Var}\left[ \widetilde{\beta}_{\text{GLS}} | \mathbf{X} \right] = \left( \mathbf{X}^{\prime}\mathbf{\Omega}^{-1}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime}\mathbf{\Omega}^{-1}\mathbf{\Omega}\mathbf{\Omega}^{-1}\mathbf{X}\left( \mathbf{X}^{\prime}\mathbf{\Omega}^{-1}\mathbf{X}\right)^{-1}$$`
+`$$= \left( \mathbf{X}^{\prime}\mathbf{\Omega}^{-1}\mathbf{X}\right)^{-1} \ \blacksquare$$`
+
+---
+class: middle
+## Feasible GLS
+
+But clearly, that is an **unfeasible estimator**, since `\(\mathbf{\Omega} = \mathbb{E} \left[ \mathbf{e}\mathbf{e}^{\prime} | \mathbf{X}\right]\)` is a population moment, and therefore unknown
+
+We can approach this problem by using a *plug-in estimator*, substituting `\(\mathbf{\Omega}\)` for a reasonable estimator, such as `\(\mathbf{\widehat{\Omega}} = \text{diag} (\widehat{e}_1^2, ..., \widehat{e}_N^2)\)`: this is called the **feasible GLS**
+
+Here, each squared residual is a estimator for the individual error `\(e_i\)` &amp;mdash; now note that given an estimator for `\(\mathbf{\Omega}\)` like the one above, we can also use it to calculate the variance of our OLS parameter estimates
+
+---
+class: middle
+## Estimating the error term
+
+Now if the errors are homoskedastic, then we know that `\(\mathbf{\Omega} = \mathbf{I_N}\sigma^2\)`, but if we use the naive estimator `\(\widehat{\sigma^{2}} =  \mathbf{e}^{\prime}\mathbf{e}/N\)`, it is *biased*: 
+
+`$$\mathbf{E} \left[ \widehat{\sigma^2} | \mathbf{X} \right] = \mathbf{E} \left[ \frac{\mathbf{e}^{\prime}\mathbf{e}}{N} | \mathbf{X} \right] = \frac{1}{N} \mathbf{E} \left[(\mathbf{M}\mathbf{Y})^{\prime}\mathbf{M}\mathbf{Y} | \mathbf{X} \right]$$`
+`$$=\frac{1}{N} \mathbf{E} \left[(\mathbf{M}(\mathbf{X}\beta + \mathbf{e}))^{\prime}\mathbf{M}(\mathbf{X}\beta + \mathbf{e}) | \mathbf{X} \right] = \frac{1}{N} \mathbf{E} \left[(\mathbf{M}\mathbf{e})^{\prime}\mathbf{M}\mathbf{e} | \mathbf{X} \right]$$`
+`$$= \frac{1}{N} \mathbf{E} \left[ \mathbf{e}^{\prime}\mathbf{M}\mathbf{e}|\mathbf{X}\right] = \frac{1}{N}\text{tr}(\mathbf{M}\sigma^2)= \sigma^2 \left( \frac{N - K}{N} \right) \  \blacksquare$$`
+
+---
+class: middle
+## Estimating the variance-covariance matrix
+
+Luckily, we can correct for this by dividing the estimator by `\(N - K\)` instead of `\(N\)` (we call this estimator `\(\widehat{s^2}\)`) &amp;mdash; also, for large samples this bias tends to zero (the naive estimator is **consistent**, as we will see)
+
+Then the homoskedastic estimator of the variance of the OLS parameters is: `$$\widehat{\text{Var}\left[ \widetilde{\beta}_{\text{OLS}} | \mathbf{X} \right]}_{0} \equiv \widehat{V}_{\widehat{\beta}}^0 = \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1}\widehat{s^2}$$`
+
+(We should *never* use this in applied work)
+
+---
+class: middle
+## Estimating the variance-covariance matrix
+
+Much more reasonable is to allow for heteroskedasticity &amp;mdash; then the formula is more complicated but still the very straightforward *plug-in estimator*:
+
+`$$\widehat{V}_{\widehat{\beta}}^{\text{HC0}} = \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \left( \sum_{i=1}^N X_i X_i^{\prime} \widehat{e_i}^2 \right) \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1}$$`
+
+We also have HC1 var-covar matrix (which is `\(\widehat{V}_{\widehat{\beta}}^{\text{HC0}} \times ((N - K)/ N)\)`), and HC2 and HC3, with slight modifications on the error estimator (see the textbook; using HC3 is recommended)
+
+---
+class: middle
+## Multicollinearity
+
+An assumption throughout was that `\(\mathbb{E} \left[ XX^{\prime}\right]\)` is invertible &amp;mdash; in fact, if `\(\mathbf{X}^{\prime}\mathbf{X}\)` is singular, then the OLS estimator is not even well defined
+
+When this does not happen, we call it **strict multicollinearity**: the columns (variables) of `\(X\)` are linearly dependent: namely, one covariate is a linear function of other covariates
+
+A more common problem is *near multicollinearity*: when two or more regressors are very correlated &amp;mdash; this greatly increases the variability of estimators. What can we do about it? The same as "micronumerosity" (Goldberger, 1991): only gather better (more) data
+
+---
+class: middle
+## Clustered sampling
+
+Most statistical theory assumes *random sampling* (i.i.d. errors) &amp;mdash; in the real world, however, this is unfortunately very rare
+
+For example, students in a same school have similar professors, endownments, neighborhoods &amp;mdash; this generates **clustered sampling**: errors among students from the same school are correlated among themselves
+
+Note that we still assume that `\(\mathbf{E} \left[ e_i e_j | \mathbf{X} \right] = 0\)` if `\(i\)` and `\(j\)` are in different schools, but we can no longer do that if they study together
+
+---
+class: middle
+## Clustered errors
+
+If we assume errors are correlated among clusters, now for identification we need that `\(\mathbf{E} \left[ e_{ig} | \mathbf{X}_g \right] = 0\)`, for all `\(i\)` in group `\(g\)` &amp;mdash; given this, however, OLS is still unbiased, but now the variance-covariance matrix must be estimated to be **cluster robust**:
+
+`$$\widehat{V}_{\widehat{\beta}}^{\text{CR}} = \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \left( \sum_{g=1}^G \mathbf{X}_g^{\prime} \widehat{\mathbf{\Omega}}_g \mathbf{X}_g \right) \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1}$$`
+Compare this to the HC0 formula a few slides back: now the inside part is composed by (non-diagonal) matrixes, since correlation between individuals in the same group is allowed
+
+---
+class: middle
+## Clustered errors
+
+Imagine that we decide to double our sample by taking couples data and creating "husbands" and "wives": under HC0 variance, this would halven the standard errors, but that cannot be right!
+
+The clustered estimator corrects standard errors by understanding that correlated observations have "less information": in the extreme case that they are perfectly correlated (like above), it disregards then altogether
+
+To see this, suppose that all clusters have size `\(N\)`, error is homoskedastic with variance `\(\sigma^2\)` and covariance (within cluster) is `\(\sigma^2 \rho\)`. Then:
+
+`$$\widehat{V}_{\widehat{\beta}}^{\text{CR}} = \widehat{V}_{\widehat{\beta}}^{0}(1 + \rho (N - 1))$$`
+
+---
+class: middle
+## At what level to cluster
+
+In a sense, the cluster robust variance should be seen as each cluster "counts as one observation" &amp;mdash; so a regression with 25 clusters (states in Brazil, for example) is like a heteroskedastic regression with 25 observations: scary!
+
+Also, if clusters are heterogeneous in size, this might lead to highly heteroskedastic errors, which also compromises inference
+
+So at what level to cluster will in practice depend on this compromise of allowing for more general correlation structures (which eliminates bias of wrongly assuming i.i.d. errors) and maintaining a reasonable number of clusters (which lowers the number of variance parameters to estimate) &amp;mdash; this leads to the famous **trade-off between bias and variance**
+
+---
+class: middle, center, inverse
+
+# Large sample asymptotics (ch 6, ch. 7.1-3 and 7.12-14)
+
+---
+class: middle
+## Modes of convergence
+
+A sequence of random vectors `\(Z_n \in \mathbb{R}^K\)` **converges in probability** to a random vector `\(Z\)` (in that case, we say that `\(Z_n \rightarrow_p Z\)` or `\(\text{plim}_{n \in \mathbb{N}} Z_n = Z\)`), if for all `\(\delta &gt; 0\)`, there is an `\(\epsilon &gt;0\)` and a `\(N\)` such that for all `\(n &gt; N\)`: `$$\text{Pr}\left( ||Z_n - Z|| \leq \delta \right) &gt; 1 - \epsilon$$`
+
+We say that `\(Z_n\)` **converges in distribution** to `\(Z\)`, denoted `\(Z_n \rightarrow_D Z\)`, or `\(Z_n \sim_{ass} Z\)`, if for all `\(u\)` such that `\(F(u) = \text{Pr}(Z \leq u)\)` is continuous, `\(F_n (u) \rightarrow F(u)\)` &amp;mdash; then we say that `\(F(u)\)` is the **asymptotic distribution** of `\(\{Z_n\}_{n\in \mathbb{N}}\)`
+
+Note that convergence in probability is stronger than in distribution
+
+---
+class: middle
+## Consistency and the Weak Law of Large Numbers
+
+An estimator `\(\widehat{\theta}\)` is **consistent** for a parameter `\(\theta\)` when `\(\widehat{\theta} \rightarrow_p \theta\)`
+
+Here, it is very useful the great **Weak Law of Large Numbers**: if `\(Y_n\)` are i.i.d. random vectors of dimension `\(K\)` and `\(h: \mathbb{R}^K \rightarrow \mathbb{R}^Q\)` is a known function, then: `$$\text{plim}_{N\rightarrow \infty}\frac{1}{N}\sum_{n=1}^N h(Y_n) = \mathbb{E} \left[ h(Y) \right]$$`
+
+Also useful here is the **Continuous Mapping Theorem (CMT)**: if `\(Z_n \rightarrow_d Z\)` (or in probability, if `\(Z\)` is degenerate) and `\(g: \mathbb{R}^K \rightarrow \mathbb{R}^Q\)` is continuous with probability one, then `\(g(Z_n) \rightarrow_d g(Z)\)` (or in probability etc)
+
+---
+class: middle
+## Asymptotic distributions and the CLT
+
+Asymptotic distributions are handled by the **Central Limit Theorem (CLT)**: `\(Y_n \in \mathbb{R}^K\)` are i.i.d. with finite second moments, then:
+ 
+`$$\sqrt{N} \left( \frac{1}{N} \sum_{n=1}^{N}{Y_n} - \mathbb{E} \left[ Y \right] \right) \rightarrow_d N(0, \mathbb{E} \left[(Y - \mathbb{E} \left[ Y \right])(Y - \mathbb{E} \left[ Y \right])^{\prime} \right])$$`
+Such as the CMT regarding convergence, distributions also have a fundamental theorem, the **Delta Method**: let `\(\mu \in \mathbb{R}^K\)` and `\(g:\mathbb{R}^K \rightarrow \mathbb{R}^Q\)`. If `\(\sqrt{N} \left(\widehat{\mu} - \mu \right) \sim_{ass} N(0, \mathbf{V})\)`, and `\(\mathbf{G} = \nabla g(\mu)\)`, then:
+
+`$$\sqrt{N} \left(g(\widehat{\mu}) - g(\mu) \right) \sim_{ass} N\left(0, \mathbf{G}^{\prime} \mathbf{V}\mathbf{G}\right)$$`
+
+---
+class: middle
+## Stochastic symbols
+
+It is convenient to have a symbol for random vectors that converge in probability to zero or that are asymptotically bounded &amp;mdash; for the first case we use "little-oh" notation, for the second case "big-oh"
+
+A sequence of random vectors is **little-oh-P-one**, and we write `\(Z_n = o_p (1)\)`, if `\(Z_n \rightarrow_p 0\)` &amp;mdash; if it grows, say, less than linearly on `\(n\)`, we say that `\(Z_n = o_p (n)\)`, namely, `\(\text{plim}_{n\rightarrow \infty} Z_n/n = 0\)` (and so on)
+
+A sequence of random vectors is **big-oh-P-one**: `\(Z_n = O_p(1)\)`, if for any `\(\epsilon &gt; 0\)`, there is a constant `\(L\)` such that `\(\lim \sup_{n\rightarrow \infty} \Pr (|Z_n| &gt; L) \leq \epsilon\)` &amp;mdash; and we say that `\(Z_n = O_p (n^{-1/2})\)`, for example, if `\(\sqrt{n} Z_n = O_p (1)\)`, as in the CLT
+
+---
+class: middle
+## Asymptotic theory for the OLS
+
+So far we looked at "finite sample" properties of the OLS, and we saw it is unbiased and how to estimate its variance &amp;mdash; but the variance is not enough for **hypothesis testing**: we need to know the distribution of the errors
+
+So we can either assume normality (please don't) or show that in large samples the OLS estimator (and most others) is `\(\mathbf{\sqrt{N}}\)`**-asymptotically normal**: this is our purpose here
+
+Assume that we have an i.i.d. sample with finite forth moments and that `\(\mathbb{E} \left[ XX^{\prime} \right]\)` is invertible
+
+---
+class: middle
+## Consistency
+
+Then the **WLLN** and the **CMT** imply that: 
+
+`$$\widehat{\beta} = \left( \frac{1}{n} \sum_{i=1}^{n}X_iX_i^{\prime} \right)^{-1} \left( \frac{1}{n} \sum_{i=1}^{n} X_iY_i \right) \rightarrow_p \mathbf{E} \left[ XX^{\prime}  \right]^{-1} \mathbf{E} \left[XY \right] = \beta$$`
+An equivalent way of looking at this consistency result is that:
+
+`$$\widehat{\beta} = \left( \frac{1}{n} \sum_{i=1}^{n}X_iX_i^{\prime} \right)^{-1} \left( \frac{1}{n} \sum_{i=1}^{n} X_i(X_i^{\prime}\beta + e_i) \right)$$`
+`$$=\beta + \left( \frac{1}{n} \sum_{i=1}^{n}X_iX_i^{\prime} \right)^{-1} \left( \frac{1}{n} \sum_{i=1}^{n} X_ie_i \right) = \beta + o_p(1),$$`
+since the second summation converges to `\(\mathbf{E} \left[ XX^{\prime}  \right]^{-1} \mathbb{E} \left[ e | X \right] = 0\)` `\(\blacksquare\)`
+
+---
+class: middle
+## Asymptotic normality
+
+We saw that the difference between `\(\widehat{\beta}\)` and `\(\beta\)` is `\(o_p(1)\)` &amp;mdash; in fact, as we will see it is `\(O_p(n^{-1/2})\)`: let's try multiplying it by `\(\sqrt{n}\)` and find its distribution
+
+`$$\sqrt{n} \left( \widehat{\beta} - \beta \right) = \left( \frac{1}{n} \sum_{i=1}^{n}X_iX_i^{\prime} \right)^{-1} \left( \frac{\sqrt{n}}{n} \sum_{i=1}^{n} X_ie_i \right)$$`
+Now, we can apply the **CLT** on the *second* term, since its expectation is zero, so that:
+
+`$$\sqrt{n} \left( \frac{1}{n} \sum_{i=1}^{n} X_ie_i - \mathbb{E} \left[ e | X \right] \right) \sim_{ass} N\left(0, \mathbb{E}\left[ XX^{\prime}e^2\right] \right)$$`
+
+---
+class: middle
+## Asymptotic normality
+
+Finally, we apply the **Delta Method**:
+
+`$$\sqrt{n} \left( \widehat{\beta} - \beta \right) \sim_{ass} N\left(0, \mathbf{E} \left[ XX^{\prime}  \right]^{-1} \mathbb{E}\left[ XX^{\prime}e^2\right] \mathbf{E} \left[ XX^{\prime}  \right]^{-1}\right) \ \blacksquare$$`
+(As we promised, this also shows that `\(\widehat{\beta} = \beta + O_p(n^{-1/2})\)`.) This is the **asymptotic variance-covariance matrix** 
+
+Note comparing the formulas that `\(n \widehat{V}_{\widehat{\beta}}^{\text{HC0}} \rightarrow \text{Avar}(\widehat{\beta})\)`: because of the **WLLN**, `\(\mathbb{E}\left[ XX^{\prime}e^2\right] \rightarrow_p 0\)`, so to have a non-degenerate variance `\(\text{Avar}(\widehat{\beta})\)`, we multiply `\(\widehat{\beta} - \beta\)` by `\(\sqrt{n}\)` (and thus its variance by `\(n\)` because of bilinearity)
+
+---
+class: middle
+## Statistic t
+
+Imagine we want to know the precision of an estimator of `\(\theta = h(\beta) \in \mathbb{R}^Q\)`
+
+The **t-ratio** is a measure of confidence in the estimator that is **asymptotically pivotal**: its distribution does not depend on parameters &amp;mdash; indeed:
+
+`$$T(\theta) = \frac{\widehat{\theta} - \theta}{s(\widehat{\theta})}= \frac{\sqrt{n}(\widehat{\theta} - \theta)}{\sqrt{n\widehat{V}_{\widehat{\theta}}^{\text{HC0}}}}\rightarrow_d \frac{N(0, \text{Avar}(\widehat{\theta}))}{\sqrt{\text{Avar}(\widehat{\theta})}} = N(0,1)$$`
+In large samples, we can always check the t-ratio against the `\(N(0,1)\)` distribution, making it a very convenient statistic of the precision of our estimatives
+
+---
+class: middle
+## Confidence intervals
+
+So far we looked at **point estimators** `\(\widehat{\theta}\)` that are a single value in `\(\mathbb{R}^Q\)`, but we could also consider **set estimators**, most commonly interval estimators of the form `\(\widehat{C} = [ \widehat{L}, \widehat{U} ]\)`
+
+When we set the *coverage probability* `\(\Pr (\theta \in \widehat{C})\)`, with probability taken regarding the (unknown) parameter `\(\theta\)`, such that `\(\inf_{\theta}\Pr (\theta \in \widehat{C}) = 1 - \alpha\)`, we call this set estimator a `\(\mathbf{1 - \alpha}\)` **confidence interval**
+
+Since `\(\widehat{\theta}\)` is asymptotically normal with standard errors `\(s(\widehat{\theta})\)`, we can simply use the `\(\widehat{\theta} \pm c\cdot s(\widehat{\theta})\)`, where `\(c\)` is the `\(1 - \alpha\)` quantile of the Normal distribution (say, 1.96)
+
+---
+class: middle
+## Regression intervals
+
+And indeed `\(\Pr (\theta \in \widehat{C}) = \Pr (T(\theta) \leq c) = \Pr( |Z| \leq c ) = 1 - \alpha\)` `\(\blacksquare\)`
+
+We can apply the same idea if we want to estimate the CEF `\(\mathbb{E} \left[ Y | X = x \right] \equiv m(x) = x^{\prime}\beta\)`: since it is a linear function of the OLS estimator `\(\widehat{\beta}\)`, the Delta Method gives us that the plug-in CEF estimator is asymptotic Normal
+
+So a confidence interval for the CEF estimator, or a **regression interval**, is given by the formula above; for example a `\(5\%\)` interval:
+
+`$$\left[x^{\prime} \widehat{\beta} - 1.96 \sqrt{x^{\prime} \widehat{V}_{\widehat{\beta}}x}, x^{\prime} \widehat{\beta} + 1.96 \sqrt{x^{\prime} \widehat{V}_{\widehat{\beta}}x} \right]$$`
+
+---
+class: middle
+ 
+&lt;img src="figs/eae6029-1-7.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+When presenting estimated CEFs, they must always come with regression intervals &amp;mdash; note how the intervals become wider at the edges, since there are less observations there, and especially in (b) with non-linear effects
+
+---
+class: middle, center, inverse
+
+# Hypothesis testing (ch.9 up to 9.10 and 9.20)
+
+---
+class: middle
+## Hypothesis
+
+A **hypothesis test** attempt to assess whether there is evidence *contrary* to a proposed restriction &amp;mdash; we will consider hypothesis of the kind `\(\theta = \theta_0\)`, where `\(\theta = r(\beta)\)` is a function of the CEF parameters
+
+The **null hypothesis** `\(\mathbf{H}_0\)` is the restriction `\(\theta = \theta_0\)`, which is tested against the *alternative hypothesis* `\(H_1 = \{ \theta \in \Theta | \theta \neq \theta_0\}\)`
+
+Obviously, the true parameter `\(\theta\)` either satisfies or not the null hypothesis &amp;mdash; but we do not observe `\(\theta\)`, so we can only say what is the probability that it does (based on the data we observe)
+
+---
+class: middle
+## Tests
+
+Then how do we decide whether to accept or reject the null hypothesis? We define a **test statistic** `\(T = T(\{X_i, Y_i\}_{i\in n})\)` and set an *acceptance region* if `\(T \leq c\)`
+
+If `\(T &gt; c\)`, where `\(c\)` is the **critical value**, then we are in the *rejection region* and should reject `\(H_0\)`
+
+The most common (but certainly not only) test is the previously seen *t statistic*, where we reject the null `\(H_0: \theta = \theta_0\)` (usually `\(\theta_0 = 0\)`) if: `$$\left|\frac{\widehat{\theta} - \theta_0}{s(\widehat{\theta})}\right| &gt; \Phi^{-1}\left(1- \frac{\alpha}{2}\right)$$`
+
+---
+class: middle
+## Type I error
+
+Since we do not observe `\(\theta\)`, and therefore have to "make guesses" based on estimated `\(\widehat{\theta}\)`, we are bound to make mistakes when testing
+
+**Type I error** is when we falsely reject the null hypothesis: it is the main measure of interest in hypothesis testing &amp;mdash; and the probability of that error is called the **size** of a test:
+
+`$$\Pr (\text{reject } H_0\ |\ H_0 ) = \Pr (T &gt; c\ |\ H_0 )$$`
+Note that all tests assume `\(H_0\)` is true (condition on it) &amp;mdash; frequently, the (asymptotic) distribution of the test is not even known under `\(H_1\)`
+
+---
+class: middle
+## Type II error
+
+The other possible way we might err is the **Type II error**: when we accept `\(H_0\)`, even though it is false &amp;mdash; the probability this *does not* happen is called **power** `\(\pi\)` of the test:
+
+`$$\pi(\theta) = \Pr (\text{reject } H_0 \ |\ H_1) = \Pr (T &gt; c\ |\ H_1)$$`
+Note that the (unknown) power of the test is calculated under the *alternative hypothesis*: this makes it substantially harder to estimate, and often we will need to consider particular deviations from `\(H_0\)`
+
+---
+class: middle
+## Statistical significance
+
+This leads to a *trade-off* between size and power: the higher the size, the lower the power, and vice-versa
+
+We set the **statistical significance** `\(\alpha\)` to ensure the size is at most `\(\alpha\)`, so when we reject `\(H_0\)` we can say the data is inconsistent with the null &amp;mdash; but when we do not reject `\(H_0\)`, we frequently cannot "accept" the null, since *we do not know the power of the test*
+
+There is a difference between *statistically* significant effects and **economically significant effects**: nowadays, with gigantic data-sets, we often can reject the null even with trivially small (but positive) effects
+
+---
+class: middle
+## Wald test
+
+The *t test* is applicable when we are testing 1-dimensional restrictions: if we want to test multiple restrictions `\(\theta = r(\beta) \in \mathbb{R}^Q\)` at once, we use the **Wald test**:
+
+`$$W = \left( r(\widehat{\beta}) - \theta_0 \right)^{\prime} \left( \widehat{\mathbf{R}}^{\prime} \widehat{\mathbf{V}}_{\widehat{\beta}}\widehat{\mathbf{R}} \right)^{-1}\left( r(\widehat{\beta}) - \theta_0 \right)$$`
+Where we simply used the **Delta Method**, and since it is the square of normalized `\(\left( r(\widehat{\beta}) - \theta_0 \right)\)`, which we know is asymptotically `\(N(0,1)\)`, then it is straightforward to see that `\(W \sim_{ass} \chi^2_Q\)`
+
+---
+class: middle
+## Multiple testing
+
+Frequently, researchs present tables with tens or (I have seen it before) hundreds of different coefficients and their statistical significance (therefore implying a hypothesis test)
+
+If you have `\(\alpha = 0.1\)`, then (roughly) every ten estimatives of parameters that satisfy `\(H_0\)`, one should be rejected purely by randomness &amp;mdash; this is the problem of **multiple testing**
+
+This is handled (among others) by the **Bonferroni correction**: if we are testing `\(k\)` statistics, we can bound the size of the test of *any* rejection by `\(\alpha\)` if we reject `\(H_0\)` only if the smallest p-value is smaller than `\(\alpha/k\)` 
+
+---
+class:middle
+# Bibliography
+
+&lt;small&gt;
+[AP10] J. D. Angrist and J. Pischke. "The credibility revolution in
+empirical economics: How better research design is taking the con out
+of econometrics". In: _Journal of economic perspectives_ 24.2 (2010),
+pp. 3-30.
+
+[HV07] J. J. Heckman and E. J. Vytlacil. "Econometric evaluation of
+social programs, part I: Causal models, structural models and
+econometric policy evaluation". In: _Handbook of econometrics_ 6
+(2007), pp. 4779-4874.
+&lt;/small&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

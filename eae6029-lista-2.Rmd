@@ -1,0 +1,96 @@
+---
+title: "EAE6029 - Econometria I<br/>Lista 2"
+author: "Prof: Pedro Forquesato<br/>pforquesato@usp.br<br/>Faculdade de Economia, Administração e Contabilidade<br />Universidade de São Paulo"
+date: "2023/1"
+output:
+  prettydoc::html_pretty:
+    toc: no
+    toc_depth: 1
+    #toc_float: yes
+    theme: architect
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
+---
+
+\
+
+# Exercise list 2
+
+## Analytical problems
+
+\
+
+1) Let's analyze the following potential outcomes model: $h(0, u) = \alpha + \eta W + u$ and $h(1, u) = \alpha + (1 - W)\gamma_0 + W\gamma_1 + u$, where $W$ is a dummy variable (a "type", let's say sex), and consider the linear projection of $Y = h(T, u; W)$ on $T$ and $W$: $$Y = \beta_0 + \beta_1 T + \beta_2 W + e$$
+
+What is the ATE? And ATT? What does $\beta_1$ identify? And $\beta_2$? Under which conditions? Be specific.
+
+2) Consider a single variable model $Y = X\beta + e$ and $X \in \mathbb{R}$, and consider an IV estimator where $Z \in \{0, 1\}$. Find a simple expression for the estimator in this context.
+
+3) In the usual structural model $Y_1 = Z_1^{\prime}\beta_1 + Y_2^{\prime}\beta_2 + e$ and $Y_2 = Z^{\prime}\Gamma + u$, $\Gamma$ is $l \times k$, $l \geq k$, it is stated that a condition for identification is $\text{rank}(K) = k$. Show that this is true.
+
+4) Take the linear model $Y = X^{\prime}\beta + e$, with $\mathbb{E}[e | X] = 0$, with $X \in mathbb{R}$. Is $Z = (X, X^2)$ a valid instrument for $\beta$? How does this differ from OLS?
+
+5) Consider a supply and demand as below, where $Y$ is income and $W$ wages. Discuss the conditions for its identification:
+
+$$\text{[S:] }Q = \alpha_S + \beta_S P + \gamma_1 Y + e_S$$
+$$\text{[D:] }Q = \alpha_D + \beta_D P + \gamma_2 W + e_D$$
+
+
+6) In the standard IV structural model $Y = X^{\prime}\beta + e$ and $X = Z^{\prime}\Gamma + u$, consider the usual control function $e = u^{\prime}\eta + v$. Show (algebraically) that $\mathbb{E}[Xv] = 0$.
+
+7) Consider a IV structural model with a real-valued endogenous variable $X$, where $Y = \alpha + \beta_1 X + \beta_2 X^2 + e$ and $X = \gamma_0 + \gamma_1 Z + u$, with $\mathbb{E}[e|Z] = 0$. Is $X^2$ endogenous? If we estimate an IV model with instruments $(1, Z, Z^2)$, under what conditions is the model identified? 
+
+8) In the standard structural model $Y_1 = Z_1^{\prime}\beta_1 + Y_2^{\prime}\beta_2 + e$ and $Y_2 = Z^{\prime}\Gamma + u$, show that we can test the null $H_0 : \beta_2 = 0$ only by the reduced form equation $Y_1 = Z_1^{\prime}\lambda_1 + Z_2^{\prime}\lambda_2 + v$.
+
+9) Consider two i.i.d. samples, one for men and other for women, and the regression $Y_l = X_l^{\prime}\beta_l + e_l$, where $l$ is men or women. Think $X_l$ are endogenous, and we have valid instruments $Z_l$, $l=1,2$. Develop a statistic for the test $H_0 : \beta_1 = \beta_2$ and explain briefly how you would estimate it.
+
+## Computational/interpretative problems
+
+\
+
+For this list, we will use the `AK1991.dta` file provided by the textbook author. You should **provide the code** and the results *together*.
+
+
+```{r first, warning=FALSE}
+library(haven)
+library(kableExtra)
+library(knitr)
+
+# setwd() <- this might help
+
+#  you can download the file directly in R, or just do it manually
+# url <- "https://www.ssc.wisc.edu/~bhansen/econometrics/Econometrics%20Data.zip"
+# download.file(url, "./econ_data.zip")
+# unzip("./econ_data.zip")
+
+ak1991 <- read_dta("./AK1991.dta")
+knitr::kable(head(ak1991, 10))
+
+```
+
+Here we will take a look at Angrist and Krueger (1991) analysis of returns to education. As previously mentioned, there is a long tradition in economics (and econometrics) trying to identify the **Mincerian equation** of returns to schooling. 
+
+AK try to employ an instrumental variables strategy, instrumenting for education by time of birth, since compulsory schooling laws define a minimum age everyone must stay at school (usually 16 or 17).
+
+1) Restrict the sample only to black. Run an OLS regression of log wages on education, urban and married, as well as dummies for year-of-birth, state-of-birth and region-of-residence (these dummies do not need to be reported).
+
+2) Are the OLS estimates trust-worthy? Explain in detail, using examples. If useful, draw a DAG.
+
+3) Now run an 2SLS regression using as instruments quarter-of-birth times year-of-birth (30 instruments). Report the first stage, reduced form and 2SLS estimates.
+
+4) Compare the results of 1 and 2. If we believe in the IV regression, what does it tell us about the OLS bias? Be detailed. If useful, draw a DAG.
+
+5) Do an endogeneity test and an overidentification test. Discuss the results and interpret them precisely.
+
+6) Estimate now the IV regression using the two-stage procedure discussed in class. Are the estimates the same? What about the estimated standard deviation of the estimator?
+
+7) Now estimate the structural model using the control function approach. Again compare the results.
+
+8) Are the instruments strong or weak? Be detailed and precise.
+
+9) A common suggestion in these cases is to lower the number of instruments. Try using only quarter-of-birth (3 instruments). Which would you use in your own research? Be precise why.
+
+10) In class we discussed how instruments identify the local average treatment effect (LATE). How does this affect the interpretation of the results? Explain in detail.
+
+11) Angrist & Krueger (1991) control for region-of-residence and urban. Is there an argument why we might want to avoid these controls? What do you think?

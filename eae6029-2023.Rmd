@@ -1,0 +1,67 @@
+---
+title: "EAE6029 - Econometria I"
+author: "Prof: Pedro Forquesato<br/>pforquesato@usp.br<br/>Faculdade de Economia, Administração e Contabilidade<br />Universidade de São Paulo"
+date: "2023/1"
+output:
+  prettydoc::html_pretty:
+    toc: no
+    toc_depth: 1
+    #toc_float: yes
+    theme: architect
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
+---
+
+\
+
+# Syllabus
+
+\
+This is the first part of the basic sequence of econometric courses provided by the graduate program of the Department of Economics at FEA-USP. This first course covers the estimation of linear regression models in cross-sections and panel data, and introduces the student to the problem of identification of economic models. Knowledge of probability, statistics, and matrix algebra (all at the level of the summer course provided by the department) are prerequisites for the course.
+
+
+### Content and readings
+
+1. **The ordinary least squares estimator:** asymptotic properties; conditional expectations and linear projections; inference and hypothesis testing; heteroskedasticity and clustered sampling. *Bibliography:* Hansen (2022): ch. 2 (up to 2.25), ch. 3 (up to 3.18), ch. 4, ch. 7.1-7.3 and 7.12-14, and ch. 9 (up to 9.10 and 9.20). [[Slides]](https://www.pedroforquesato.com/eae6029/eae6029-week-1.html) [[Exercise list]](https://www.pedroforquesato.com/files/eae6029-lista-1.html).
+
+2. **Instrumental variables and causal effects:** identification: Rubin causal model and potential outcomes; omitted variable bias and measurement errors; properties of the estimator and two-stages least squares; average and local average treatment effects; control functions and specification tests. Regression in discontinuity design. *Bibliography:* Hansen (2022): ch. 12, ch. 21. [[Slides]](https://www.pedroforquesato.com/eae6029/eae6029-week-2.html) [[Exercise list]](https://www.pedroforquesato.com/files/eae6029-lista-2.html).
+
+3. **Panel data:** Pooled cross-sections and difference-in-differences; fixed effects and random effects models; first differencing and lagged dependent variables. *Bibliography:* Hansen (2022). ch. 17 and ch. 18. [[Slides]](https://www.pedroforquesato.com/eae6029/eae6029-week-3.html) [[Exercise list]](https://www.pedroforquesato.com/files/eae6029-lista-3.html).
+
+The textbook mentioned above used for this course is:
+
+* Hansen, Bruce. Econometrics. Princeton University Press, 2022.
+
+Other books that are potentially useful:
+
+* Hayashi, Fumio. Econometrics. Princeton University Press, 2000.
+* Greene, William H. Econometric Analysis. Prentice Hall, 6th edition, 2008.
+* Newey, W.K. And Mcfadden, D.L. Large sample estimation and hypothesis testing. In: Handbook of Econometrics, vol IV, ch. 36, 1994.
+* Wooldridge, Jeffrey M. Econometric analysis of cross section and panel data. MIT press, 2010. (2ª edição.)
+* Cameron, A. Colin, and Pravin K. Trivedi. Microeconometrics: methods and applications. Cambridge university press, 2005.
+
+### Grading
+
+Three (3) lists of exercises, graded, **worth 10% of final grade each**. First list on topics 1 and 2, second list on topic 3 and third list on topic 4. The lists will mimic the exam, with 10 questions, five theoretical/analytical, five an applied exercise.
+
+One exam, **worth 70% of the final grade**, based on the lists and class material: 5 points applied/interpretative, 1 question from the list with small changes, 1 new analytical question.
+
+1. If the final grade $\geq$ 50%: letter grade B or more
+3. Else: second evaluation: second evaluation is another exam (same style). Those with grade > 50% are approved with C; otherwise fail.
+
+### Ethics
+
+Lists can be discussed in group, and you are free to ask questions of your colleagues and/or the TA, but **the lists need to be written and delivered individually**. Plagiarism in any of the exercise lists (analytical and/or applied) will lead to a zero on *all* three lists.
+
+Exams are individual and closed book. Any kind of cheating on the exam will lead to an immediate fail (R) in the course, without prejudice of any administrative action.
+
+### Office Hours
+
+I'll leave the link to schedule office hours at the Moodle website for the course. If the office-hours time is not possible for you, please send me an e-mail.
+
+### Teaching assistant
+
+
+
+\
