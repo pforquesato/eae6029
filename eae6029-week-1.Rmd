@@ -333,22 +333,22 @@ Stacking the sample together, we have the matrix notation of a regression model:
 class: middle
 ## Projection matrix
 
-In what follows, we will work with the matrix notation, omitting the boldface. Consider first the **projection matrix**, which projects vectors $Z$ into the *column space* of $X$:
+In what follows, we will work with the matrix notation. Consider first the **projection matrix**, which projects vectors $Z$ into the *column space* of $\mathbf{X}$:
 
-$$P = X (X^{\prime}X)^{-1} X^{\prime}$$
-Clearly, if $Z$ is already in the column space of $X$, say, $Z = X\Gamma$ for some $\Gamma$, then the projection should not move $Z$ at all! Indeed, that is true:
+$$\mathbf{P}_{n\times n} = \mathbf{X} (\mathbf{X}^{\prime}\mathbf{X})^{-1} \mathbf{X}^{\prime}$$
+Clearly, if $Z$ is already in the column space of $\mathbf{X}$, say, $Z = \mathbf{X}\Gamma$ for some $\Gamma$, then the projection should not move $Z$ at all! Indeed, that is true:
 
-$$PZ = PX\Gamma = X (X^{\prime}X)^{-1} X^{\prime}X\Gamma = X\Gamma = Z$$
+$$\mathbf{P}Z = \mathbf{P}\mathbf{X}\Gamma = \mathbf{X} (\mathbf{X}^{\prime}\mathbf{X})^{-1} \mathbf{X}^{\prime}\mathbf{X}\Gamma = \mathbf{X}\Gamma = Z$$
 
 ---
 class: middle
 ## Projection matrix
 
-For the same intuition, we should have that since $PZ$ is in the column space of $X$, $P(PZ)$ does not move it &mdash; this is indeed true, as the projection matrix $P$ is **idempotent**: $PP = P$
+For the same intuition, we should have that since $\mathbf{P}Z$ is in the column space of $\mathbf{X}$, $\mathbf{P}(\mathbf{P}Z)$ does not move it &mdash; this is indeed true, as the projection matrix $\mathbf{P}$ is **idempotent**: $\mathbf{P}\mathbf{P} = \mathbf{P}$
 
-The projection matrix is important because OLS is nothing more than the projection of $Y$ on the column space of $X$, generating the fitted values $\widehat{Y} = PY$ (for this reason, $P$ is also known as **hat matrix**)
+The projection matrix is important because OLS is nothing more than the projection of $Y$ on the column space of $\mathbf{X}$, generating the fitted values $\widehat{Y} = \mathbf{P}Y$ (for this reason, $\mathbf{P}$ is also known as **hat matrix**)
 
-$P$ also has some cool linear algebra properties: it is symmetric: $P = P^{\prime}$; $tr(P) = rank(P) = k$, and it has $k$ eigenvalues of $1$ and $n-k$ of zero (this part not surprising, since rank is $k$)  
+$\mathbf{P}$ also has some cool linear algebra properties: it is symmetric: $\mathbf{P} = \mathbf{P}^{\prime}$; $tr(\mathbf{P}) = rank(\mathbf{P}) = k$, and it has $k$ eigenvalues of $1$ and $n-k$ of zero (this part not surprising, since rank is $k$)  
 
 
 ---
@@ -365,45 +365,46 @@ The $k$ size $n\times 1$ vectors $X_l$ form a $k$-dimension subspace (*range spa
 class: middle
 ## Annihilator matrix
 
-The **annihilator matrix** is defined as $M = I_{N} - P$. It is called that because it "annihilates" any $Z$ in the range of $X$:
+The **annihilator matrix** is defined as $\mathbf{M} = \mathbf{I}_{N} - \mathbf{P}$. It is called that because it "annihilates" any $Z$ in the range of $\mathbf{X}$:
 
-$$MZ = MX\Gamma = (I_N - P)X\Gamma = X\Gamma - X(X^{\prime}X)^{-1}X^{\prime}X\Gamma = X\Gamma - X\Gamma = 0$$
-Namely, $X$ and $M$ are orthogonal. While $P$ creates fitted values, $M$ creates *residuals*: $MY = (I_N - P)Y = Y - \widehat{Y} = \widehat{e}$
+$$\mathbf{M}Z = \mathbf{M}\mathbf{X}\Gamma = (\mathbf{I}_N - \mathbf{P})\mathbf{X}\Gamma = \mathbf{X}\Gamma - \mathbf{X}(\mathbf{X}^{\prime}\mathbf{X})^{-1}\mathbf{X}^{\prime}\mathbf{X}\Gamma = \mathbf{X}\Gamma - \mathbf{X}\Gamma = 0_N$$
+Namely, $\mathcal{R}(\mathbf{X})$ and $\mathbf{M}$ are orthogonal. While $\mathbf{P}$ creates fitted values, $\mathbf{M}$ creates *residuals*: $\mathbf{M}Y = (\mathbf{I}_N - \mathbf{P})Y = Y - \widehat{Y} = \widehat{e}$
 
-Like the projection matrix, the annihilator is idempotent and symmetric, but with rank (and trace) $n - k$: $M$ and $P$ form a basis of $\mathbb{R}^N$
+Like the projection matrix, the annihilator is idempotent and symmetric, but with rank (and trace) $n - k$: $\mathbf{M}$ and $\mathbf{P}$ form a basis of $\mathbb{R}^N$
 
 ---
 class: middle
 ## Regression components
 
-Let's finish this linear algebra incursion by partitioning $X$ in 2 subsets, such that $Y = X_1 \beta_1 + X_2 \beta_2 + e$: often we will want to estimate $\beta_2$, but running the full $k$-dimensional regression is unfeasible
+Let's finish this linear algebra incursion by partitioning $X$ in 2 subsets, such that $Y = \mathbf{X_1} \beta_1 + \mathbf{X_2} \beta_2 + e$: often we will want to estimate $\beta_2$, but running the full $k$-dimensional regression is unfeasible
 
-We still can do so by minimizing sequentially regarding $\beta_1$ and $\beta_2$, keeping the other fixed (see textbook) &mdash; if we define $M_2 = I_N - X_2 (X_2^{\prime}X_2)^{-1}X_2^{\prime}$, then we have that the linear projection (OLS) coefficient satisfies:
+We still can do so by minimizing sequentially regarding $\beta_1$ and $\beta_2$, keeping the other fixed (see textbook) &mdash; if we define $\mathbf{M_1} = \mathbf{I}_N - \mathbf{X_1} (\mathbf{X_1}^{\prime}\mathbf{X_1})^{-1}\mathbf{X_1}^{\prime}$, then we have that the linear projection (OLS) coefficient satisfies:
 
-$$\widehat{\beta}_2 = \arg \min_{\beta_2} (Y - X_2\beta)^{\prime}M_1(Y - X_2\beta) = (X_2^{\prime}M_1X_2)^{-1}X_2^{\prime}M_1Y$$
-
----
-class: middle
-## Frisch-Waugh-Lovell Theorem
-
-Since $M_1$ is idempotent and symmetric,
-
-$$\widehat{\beta}_2 = (X_2^{\prime}M_1X_2)^{-1}X_2^{\prime}M_1Y = ((X_2^{\prime}M_1^{\prime})(M_1X_2))^{-1}(X_2^{\prime}M_1^{\prime})(M_1Y)$$
-
-$$\therefore \widehat{\beta}_2 = (\widetilde{X}_2^{\prime}\widetilde{X}_2)^{-1}\widetilde{X}_2^{\prime}\widehat{e}_1,$$
-
-where $\widetilde{X}_2 = M_1 X_2$ and $\widehat{e}_1 = M_1 Y$ (remember, $M$ is the annihilator): and thus $\widehat{\beta}_2$ is the coefficient of a regression of $\widetilde{X}_2$ on $\widehat{e}_1$
+$$\widehat{\beta}_2 = \arg \min_{\beta_2} (Y - \mathbf{X_2}\beta)^{\prime}\mathbf{M_1}(Y - \mathbf{X_2}\beta) = (\mathbf{X_2}^{\prime}\mathbf{M_1}\mathbf{X_2})^{-1}\mathbf{X_2}^{\prime}\mathbf{M_1}Y$$
 
 ---
 class: middle
 ## Frisch-Waugh-Lovell Theorem
 
-Now, since $M_1$ is the annihilator matrix of $X_1$, that generates *residuals* of a regression on $X_1$, we have that $\widetilde{X}_2$ is the residuals of $X_2$ on $X_1$, and $\widehat{e}_1$ the residuals of $Y$ on $X_1$
+Since $\mathbf{M_1}$ is idempotent and symmetric,
+
+$$\widehat{\beta}_2 = (\mathbf{X_2}^{\prime}\mathbf{M_1}\mathbf{X_2})^{-1}\mathbf{X_2}^{\prime}\mathbf{M_1}Y$$ 
+$$= ((\mathbf{X_2}^{\prime}\mathbf{M_1}^{\prime})(\mathbf{M_1}\mathbf{X_2}))^{-1}(\mathbf{X_2}^{\prime}\mathbf{M_1}^{\prime})(\mathbf{M_1}Y)$$
+
+$$\therefore \widehat{\beta}_2 = (\mathbf{\widetilde{X}_2}^{\prime}\mathbf{\widetilde{X}_2})^{-1}\mathbf{\widetilde{X}_2}^{\prime}\widehat{e}_1,$$
+
+where $\mathbf{\widetilde{X}_2} = \mathbf{M_1} \mathbf{X_2}$ and $\widehat{e}_1 = \mathbf{M_1} Y$ (remember, $\mathbf{M}$ is the annihilator): and thus $\widehat{\beta}_2$ is the coefficient of a regression of $\widehat{e}_1$ on $\widetilde{X}_2$
+
+---
+class: middle
+## Frisch-Waugh-Lovell Theorem
+
+Now, since $\mathbf{M_1}$ is the annihilator matrix of $\mathbf{X_1}$, that generates *residuals* of a regression on $X_1$, we have that $\mathbf{\widetilde{X}_2}$ is the residuals of $X_2$ on $X_1$, and $\widehat{e}_1$ the residuals of $Y$ on $X_1$
 
 This leads to the fundamental **Frisch-Waugh-Lovell Theorem**: to estimate $\widehat{\beta}_2$,
 
 1. Regress $Y$ on $X_1$ and obtain residuals $\widehat{e}_1$
-2. Regress $X_2$ on $X_1$ and obtain residuals (of size $N\times K_1$) $\widetilde{X_2}$
+2. Regress $X_2$ on $X_1$ and obtain residuals (of size $N\times K_1$) $\mathbf{\widetilde{X_2}}$
 3. Regress $\widehat{e}_1$ on $\widetilde{X_2}$ and obtain $\widehat{\beta}_2$ and $\widehat{e}$
 
 ---
