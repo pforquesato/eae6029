@@ -564,7 +564,7 @@ Note that we still assume that $\mathbf{E} \left[ e_i e_j | \mathbf{X} \right] =
 class: middle
 ## Clustered errors
 
-If we assume errors are correlated among clusters, now for identification we need that $\mathbf{E} \left[ e_{ig} | \mathbf{X}_g \right] = 0$, for all $i$ in group $g$ &mdash; given this, however, OLS is still unbiased, but now the variance-covariance matrix must be estimated to be **cluster robust**:
+If we assume errors are correlated within clusters, now for identification we need that $\mathbf{E} \left[ e_{ig} | \mathbf{X}_g \right] = 0$, for all $i$ in group $g$ &mdash; given this, however, OLS is still unbiased, but now the variance-covariance matrix must be estimated to be **cluster robust**:
 
 $$\widehat{V}_{\widehat{\beta}}^{\text{CR}} = \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \left( \sum_{g=1}^G \mathbf{X}_g^{\prime} \widehat{\mathbf{\Omega}}_g \mathbf{X}_g \right) \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1}$$
 Compare this to the HC0 formula a few slides back: now the inside part is composed by (non-diagonal) matrixes, since correlation between individuals in the same group is allowed
@@ -658,7 +658,7 @@ An equivalent way of looking at this consistency result is that:
 
 $$\widehat{\beta} = \left( \frac{1}{n} \sum_{i=1}^{n}X_iX_i^{\prime} \right)^{-1} \left( \frac{1}{n} \sum_{i=1}^{n} X_i(X_i^{\prime}\beta + e_i) \right)$$
 $$=\beta + \left( \frac{1}{n} \sum_{i=1}^{n}X_iX_i^{\prime} \right)^{-1} \left( \frac{1}{n} \sum_{i=1}^{n} X_ie_i \right) = \beta + o_p(1),$$
-since the second summation converges to $\mathbf{E} \left[ XX^{\prime}  \right]^{-1} \mathbb{E} \left[ e | X \right] = 0$ $\blacksquare$
+since the second summation converges to $\mathbf{E} \left[ XX^{\prime}  \right]^{-1} \mathbb{E} \left[ Xe \right] = 0$ $\blacksquare$
 
 ---
 class: middle
@@ -669,7 +669,7 @@ We saw that the difference between $\widehat{\beta}$ and $\beta$ is $o_p(1)$ &md
 $$\sqrt{n} \left( \widehat{\beta} - \beta \right) = \left( \frac{1}{n} \sum_{i=1}^{n}X_iX_i^{\prime} \right)^{-1} \left( \frac{\sqrt{n}}{n} \sum_{i=1}^{n} X_ie_i \right)$$
 Now, we can apply the **CLT** on the *second* term, since its expectation is zero, so that:
 
-$$\sqrt{n} \left( \frac{1}{n} \sum_{i=1}^{n} X_ie_i - \mathbb{E} \left[ e | X \right] \right) \sim_{ass} N\left(0, \mathbb{E}\left[ XX^{\prime}e^2\right] \right)$$
+$$\sqrt{n} \left( \frac{1}{n} \sum_{i=1}^{n} X_ie_i - \mathbb{E} \left[ Xe \right] \right) \sim_{ass} N\left(0, \mathbb{E}\left[ XX^{\prime}e^2\right] \right)$$
 
 ---
 class: middle
@@ -680,7 +680,7 @@ Finally, we apply the **Delta Method**:
 $$\sqrt{n} \left( \widehat{\beta} - \beta \right) \sim_{ass} N\left(0, \mathbf{E} \left[ XX^{\prime}  \right]^{-1} \mathbb{E}\left[ XX^{\prime}e^2\right] \mathbf{E} \left[ XX^{\prime}  \right]^{-1}\right) \ \blacksquare$$
 (As we promised, this also shows that $\widehat{\beta} = \beta + O_p(n^{-1/2})$.) This is the **asymptotic variance-covariance matrix** 
 
-Note comparing the formulas that $n \widehat{V}_{\widehat{\beta}}^{\text{HC0}} \rightarrow \text{Avar}(\widehat{\beta})$: because of the **WLLN**, $\mathbb{E}\left[ XX^{\prime}e^2\right] \rightarrow_p 0$, so to have a non-degenerate variance $\text{Avar}(\widehat{\beta})$, we multiply $\widehat{\beta} - \beta$ by $\sqrt{n}$ (and thus its variance by $n$ because of bilinearity)
+Note comparing the formulas that $n \widehat{V}_{\widehat{\beta}}^{\text{HC0}} \rightarrow \text{Avar}(\widehat{\beta})$: since $\text{Var} (\widehat{\beta}) \rightarrow_n 0$, so to have a non-degenerate variance $\text{Avar}(\widehat{\beta})$, we multiply $\widehat{\beta} - \beta$ by $\sqrt{n}$ (and thus its variance by $n$ because of bilinearity)
 
 ---
 class: middle
