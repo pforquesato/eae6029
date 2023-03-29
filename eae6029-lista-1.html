@@ -172,12 +172,12 @@ then <span class="math inline">\(\mathbb{E} \left[ X^2e \right] =
 0\)</span></p></li>
 <li><p>Consider <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> such that their joint density is <span class="math inline">\(f(x,y) = 3/2(x^2 + y^2)\)</span> on <span class="math inline">\(\left[ 0, 1 \right]^2\)</span>. Compute the
 coefficients of the best linear predictor <span class="math inline">\(Y
-= \beta X + e\)</span>. Compute the conditional expectation function
-<span class="math inline">\(m(x) = \mathbb{E}\left[Y | X = x
+= \alpha + \beta X + e\)</span>. Compute the conditional expectation
+function <span class="math inline">\(m(x) = \mathbb{E}\left[Y | X = x
 \right]\)</span>. Are they different?</p></li>
-<li><p>Consider the long and short projections <span class="math inline">\(Y = X\gamma_1 + e\)</span> and <span class="math inline">\(Y = X_1 \beta_1 + X_2^2 \beta_2 + u\)</span>. When
+<li><p>Consider the long and short projections <span class="math inline">\(Y = X_1 \gamma_1 + e\)</span> and <span class="math inline">\(Y = X_1 \beta_1 + X_1^2 \beta_2 + u\)</span>. When
 is <span class="math inline">\(\gamma_1 = \beta_1\)</span>? What if we
-consider <span class="math inline">\(Y = X_1 \theta_1 + X_2^3 \theta_2 +
+consider <span class="math inline">\(Y = X_1 \theta_1 + X_1^3 \theta_2 +
 v\)</span>, is there a situation when <span class="math inline">\(\theta_1 = \gamma_1\)</span>?</p></li>
 <li><p>Consider the estimation of the (sample-wide) linear regression
 <span class="math inline">\(\mathbf{Y} = \mathbf{X}\beta +
@@ -191,7 +191,8 @@ coefficient of a regression of <span class="math inline">\(\mathbf{\widetilde{Y}
 <li><p>Show that <span class="math inline">\(\mathbf{M}\)</span> is
 idempotent.</p></li>
 <li><p>Show that if <span class="math inline">\(\mathbf{X} = \left[
-\mathbf{X_1} \mathbf{X_2} \right]\)</span>, then <span class="math inline">\(\mathbf{P} = \mathbf{P_1} +
+\mathbf{X_1} \mathbf{X_2} \right]\)</span>, and <span class="math inline">\(\mathbf{X_1}^{\prime} \mathbf{X_2} = 0\)</span>,
+then <span class="math inline">\(\mathbf{P} = \mathbf{P_1} +
 \mathbf{P_2}\)</span></p></li>
 <li><p>A friend suggests that the assumption that observations <span class="math inline">\((Y_i, X_i)\)</span> are i.i.d. implies that the
 errors <span class="math inline">\(e\)</span> of the regression <span class="math inline">\(Y = X^{\prime}\beta + e\)</span> are
@@ -224,19 +225,19 @@ X_i^2 \widehat{e}_i^2\]</span></p>
 <p>For this list, we will use the <code>cps09mar.dta</code> file
 provided by the textbook author. You should <strong>provide the
 code</strong> and the results <em>together</em>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># setwd() &lt;- this might help</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#  you can download the file directly in R, or just do it manually</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># url &lt;- &quot;https://www.ssc.wisc.edu/~bhansen/econometrics/Econometrics%20Data.zip&quot;</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># download.file(url, &quot;./econ_data.zip&quot;)</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># unzip(&quot;./econ_data.zip&quot;)</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>cps09mar <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;./cps09mar.dta&quot;</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(cps09mar, <span class="dv">10</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co"># setwd() &lt;- this might help</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#  you can download the file directly in R, or just do it manually</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co"># url &lt;- &quot;https://www.ssc.wisc.edu/~bhansen/econometrics/Econometrics%20Data.zip&quot;</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co"># download.file(url, &quot;./econ_data.zip&quot;)</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co"># unzip(&quot;./econ_data.zip&quot;)</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>cps09mar <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;./cps09mar.dta&quot;</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(cps09mar, <span class="dv">10</span>))</span></code></pre></div>
 <table>
 <thead>
 <tr>

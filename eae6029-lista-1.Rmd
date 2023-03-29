@@ -27,9 +27,9 @@ output:
 
 3) True of false. If $Y = X\beta + e$, $X \in \mathbb{R}$ and $\mathbb{E} \left[ Xe \right] = 0$, then $\mathbb{E} \left[ X^2e \right] = 0$
 
-4) Consider $X$ and $Y$ such that their joint density is $f(x,y) = 3/2(x^2 + y^2)$ on $\left[ 0, 1 \right]^2$. Compute the coefficients of the best linear predictor $Y = \beta X + e$. Compute the conditional expectation function $m(x) = \mathbb{E}\left[Y | X = x \right]$. Are they different?
+4) Consider $X$ and $Y$ such that their joint density is $f(x,y) = 3/2(x^2 + y^2)$ on $\left[ 0, 1 \right]^2$. Compute the coefficients of the best linear predictor $Y = \alpha + \beta X + e$. Compute the conditional expectation function $m(x) = \mathbb{E}\left[Y | X = x \right]$. Are they different?
 
-5) Consider the long and short projections $Y = X\gamma_1 + e$ and $Y = X_1 \beta_1 + X_2^2 \beta_2 + u$. When is $\gamma_1 = \beta_1$? What if we consider $Y = X_1 \theta_1 + X_2^3 \theta_2 + v$, is there a situation when $\theta_1 = \gamma_1$? 
+5) Consider the long and short projections $Y = X_1 \gamma_1 + e$ and $Y = X_1 \beta_1 + X_1^2 \beta_2 + u$. When is $\gamma_1 = \beta_1$? What if we consider $Y = X_1 \theta_1 + X_1^3 \theta_2 + v$, is there a situation when $\theta_1 = \gamma_1$? 
 
 6) Consider the estimation of the (sample-wide) linear regression $\mathbf{Y} = \mathbf{X}\beta + \mathbf{e}$. Now change the regressors to $\mathbf{Z}=\mathbf{XC}$, where $\mathbf{C}$ is a $k\times k$ non-singular matrix. How does this affect (i) the OLS estimates, and (ii) residuals of this regression?
 
@@ -37,7 +37,7 @@ output:
 
 8) Show that $\mathbf{M}$ is idempotent.
 
-9) Show that if $\mathbf{X} = \left[ \mathbf{X_1} \mathbf{X_2} \right]$, then $\mathbf{P} = \mathbf{P_1} + \mathbf{P_2}$
+9) Show that if $\mathbf{X} = \left[ \mathbf{X_1} \mathbf{X_2} \right]$, and $\mathbf{X_1}^{\prime} \mathbf{X_2} = 0$, then $\mathbf{P} = \mathbf{P_1} + \mathbf{P_2}$
 
 10) A friend suggests that the assumption that observations $(Y_i, X_i)$ are i.i.d. implies that the errors $e$ of the regression $Y = X^{\prime}\beta + e$ are homoskedastic. Do you agree? Explain why.
 
