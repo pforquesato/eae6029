@@ -154,6 +154,16 @@ Another assumption we need in quasiexperimental settings for causality is the so
 
 This assumption states that treatment of individual $i$ has no effect on other individuals: it is a no general equilibrium effects assumption
 
+
+---
+class: middle
+ 
+```{r, echo=FALSE, out.width = '85%', fig.align='center'}
+knitr::include_graphics("figs/sutva.jpg")
+```
+
+Source: [@taylor_wright](https://twitter.com/taylor_wright) apud [@KhoaVuUmn](https://twitter.com/KhoaVuUmn).
+
 ---
 class: middle
 ## Matching
