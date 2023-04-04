@@ -4,7 +4,7 @@
     <title>EAE-6029: Econometrics I</title>
     <meta charset="utf-8" />
     <meta name="author" content="Pedro Forquesato http://www.pedroforquesato.com Sala 217/FEA2 - pforquesato@usp.br" />
-    <script src="libs/header-attrs-2.18/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.21/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -747,8 +747,8 @@ Since we do not observe `\(\theta\)`, and therefore have to "make guesses" based
 
 **Type I error** is when we falsely reject the null hypothesis: it is the main measure of interest in hypothesis testing &amp;mdash; and the probability of that error is called the **size** of a test:
 
-`$$\Pr (\text{reject } H_0\ |\ H_0 ) = \Pr (T &gt; c\ |\ H_0 )$$`
-Note that all tests assume `\(H_0\)` is true (condition on it) &amp;mdash; frequently, the (asymptotic) distribution of the test is not even known under `\(H_1\)`
+`$$\text{size} = \Pr (\text{reject } H_0\ |\ H_0 ) \leq \alpha = \Pr (T &gt; c\ |\ H_0 ) = 1 - \Phi(c)$$`
+And we set the **significance level** `\(\alpha\)` to ensure that `\(\text{size}  \leq \alpha\)` &amp;mdash; Note that all tests assume `\(H_0\)` is true (condition on it): frequently, the (asymptotic) distribution of the test is not even known under `\(H_1\)`
 
 ---
 class: middle
@@ -756,7 +756,7 @@ class: middle
 
 The other possible way we might err is the **Type II error**: when we accept `\(H_0\)`, even though it is false &amp;mdash; the probability this *does not* happen is called **power** `\(\pi\)` of the test:
 
-`$$\pi(\theta) = \Pr (\text{reject } H_0 \ |\ H_1) = \Pr (T &gt; c\ |\ H_1)$$`
+`$$\pi(\theta) = \Pr (\text{reject } H_0 \ |\ H_1) = \Pr (T &gt; c\ |\ H_1) = 1 - \Pr (\text{Type II error})$$`
 Note that the (unknown) power of the test is calculated under the *alternative hypothesis*: this makes it substantially harder to estimate, and often we will need to consider particular deviations from `\(H_0\)`
 
 ---
@@ -765,9 +765,19 @@ class: middle
 
 This leads to a *trade-off* between size and power: the higher the size, the lower the power, and vice-versa
 
-We set the **statistical significance** `\(\alpha\)` to ensure the size is at most `\(\alpha\)`, so when we reject `\(H_0\)` we can say the data is inconsistent with the null &amp;mdash; but when we do not reject `\(H_0\)`, we frequently cannot "accept" the null, since *we do not know the power of the test*
+When we reject `\(H_0\)` we can say the data is inconsistent with the null &amp;mdash; but when we do not reject `\(H_0\)`, we usually cannot "accept" the null, since *we do not know the power of the test*
 
-There is a difference between *statistically* significant effects and **economically significant effects**: nowadays, with gigantic data-sets, we often can reject the null even with trivially small (but positive) effects
+There is a difference between *statistically* significant effects and **economically significant effects**: nowadays, with gigantic data-sets, we often can reject the null even with trivially small (but positive) effects &amp;mdash; a solution is to focus on *confidence intervals*
+
+---
+class: middle
+## P-value
+
+Not only there is no scientific rule to choose the *significance level* `\(\alpha\)`, but statistical tests might reject very similar estimates, with size slightly smaller (say, `\(T = 2\)`) or larger (with `\(T = 1.9\)`) t-score than the significance threshold 
+
+Instead of a binary rule (accept or reject), it is more reasonable that similar "amounts of evidence" should lead to similar "degrees of confidence" &amp;mdash; we do this reporting **asymptotic p-values** `\(p = 1 - \Phi(T)\)`
+
+It is exactly the same test to reject `\(H_0\)` if `\(T &gt; c\)` and if `\(p &lt; \alpha\)`, so `\(p\)` can also be interpreted as the smallest `\(\alpha\)` such that we still reject the null
 
 ---
 class: middle
@@ -782,11 +792,11 @@ Where we simply used the **Delta Method**, and since it is the square of normali
 class: middle
 ## Multiple testing
 
-Frequently, researchs present tables with tens or (I have seen it before) hundreds of different coefficients and their statistical significance (therefore implying a hypothesis test)
+Frequently, researchers present tables with tens or (I have seen it before) hundreds of different coefficients and their statistical significance (therefore implying a hypothesis test)
 
 If you have `\(\alpha = 0.1\)`, then (roughly) every ten estimatives of parameters that satisfy `\(H_0\)`, one should be rejected purely by randomness &amp;mdash; this is the problem of **multiple testing**
 
-This is handled (among others) by the **Bonferroni correction**: if we are testing `\(k\)` statistics, we can bound the size of the test of *any* rejection by `\(\alpha\)` if we reject `\(H_0\)` only if the smallest p-value is smaller than `\(\alpha/k\)` 
+This is handled (among others) by the **Bonferroni correction**: if we are testing the null for `\(k\)` statistics (say, pre-trends), we can bound the size of the test of *any* rejection by `\(\alpha\)` if we reject `\(H_0\)` only if the smallest p-value is smaller than `\(\alpha/k\)` 
 
 ---
 class:middle
