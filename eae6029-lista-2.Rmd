@@ -25,7 +25,7 @@ output:
 
 2) Consider a single variable model $Y = \beta X + e$ and $X \in \mathbb{R}$, and consider an IV estimator where $Z \in \{0, 1\}$. Find a simple expression for the estimator in this context.
 
-3) In the usual structural model $Y_1 = Z_1^{\prime}\beta_1 + Y_2^{\prime}\beta_2 + e$ and $Y_2 = Z^{\prime}\Gamma + u$, $\Gamma$ is $l \times k$, $l \geq k$, it is stated that a condition for identification is $\text{rank}(K) = k$. Show that this is true.
+3) In the usual structural model $Y_1 = Z_1^{\prime}\beta_1 + Y_2^{\prime}\beta_2 + e$ and $Y_2 = Z^{\prime}\Gamma + u$, $\Gamma$ is $l \times k$, $l \geq k$, it is stated that a condition for identification is $\text{rank}(\Gamma) = k$. Show that this is true.
 
 4) Take the linear model $Y = X^{\prime}\beta + e$, with $\mathbb{E}[e | X] = 0$, with $X \in \mathbb{R}$. Is $Z = (X, X^2)$ a valid instrument for $\beta$? How does this differ from OLS?
 

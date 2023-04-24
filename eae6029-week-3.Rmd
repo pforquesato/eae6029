@@ -337,20 +337,6 @@ knitr::include_graphics("figs/aula-2-grafico-3-2.png")
 In this example, the addition of $\eta_j$ does not seem to affect much the estimate, indicating that they are mostly exogenous; but not adding $v_t$ biases our estimate: there is a trend of increasing cigarette prices as well as taxes, because of greater pushback against externalities &mdash; finally, we also see a bias from ignoring $\eta_u$, which indicate that people respond to higher taxes by buying more expensive brands 
 
 
----
-class: middle
-## Example: Harding et al (2012)
-
-To investigate geographic incidence, they add distance to border $D_{ijt}$ and interact it with tax difference among states $(\tau^h - \tau^b )_{jt}$, comparing people that live close to the border with those far, and those that live in borders with no tax difference with those with tax difference:
-
-$$P_{uijt} = \beta_0 + \beta_1 \tau_{jt}^h + \beta_2 (\tau^h - \tau^b )_{jt} + \beta_3 \ln D_{ijt} +$$
-
-$$\beta_4 (\tau^h - \tau^b )_{jt} \cdot \ln D_{ijt} + \theta X_i + \delta_j + \psi_t + \alpha_u + \epsilon_{uijt}$$
-
-Now the effect of taxes on prices varies by location &mdash; to interpret the results, we need to consider that the **partial effects** are:
-
-$$\frac{\partial P}{\partial \tau^{h}} = \beta_1 + \beta_2 + \beta_4 \cdot \ln D_{ijt}$$
-
 
 ---
 class: middle
