@@ -4,7 +4,7 @@
     <title>EAE-6029: Econometrics I</title>
     <meta charset="utf-8" />
     <meta name="author" content="Pedro Forquesato http://www.pedroforquesato.com Sala 217/FEA2 - pforquesato@usp.br" />
-    <script src="libs/header-attrs-2.18/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.21/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -790,11 +790,19 @@ Again, LATE is not an issue (and the IV estimator does not depend on the instrum
 class: middle
 ## Rainfall IV: a cautionary tale
 
-During the 2000s, it was super common in development economics, when investigating the effects of income shocks on many variables, to use rainfall as an IV &amp;mdash; [Mel22] documents 288 studies with 192 different outcome variables!
+During the 2000s, it was super common in development economics, when investigating the effects of income shocks on many variables, to use rainfall as an IV &amp;mdash; [Mel22] documents 288 studies with 192 different endogenous variables!
 
 Rainfall seems at first a great instrument: it is a weather variable, therefore obviously not caused by human society (at least in the short run) &amp;mdash; the problem is that this is only part of the exclusion restriction! [Sar15]
 
 To interpret the rainfall as IV on say, democracy, then it must only affect democracy through income shocks &amp;mdash; but we just saw that it affects 192 different other variables, many of which should also cause democracy!
+
+
+---
+class: middle
+ 
+&lt;img src="figs/eae6029-2-17.png" width="90%" /&gt;
+
+An instrumental variable `\(W\)` (panel 3) can identify the effect of `\(X\)` on `\(Y\)` with a confounder (panel 2), but if we have another variable `\(Z\)` that can be instrumented with `\(W\)`, then now `\(Z\)` breaks the exclusion restriction that `\(W\)` does not affect `\(Y\)`, except through `\(Z\)` &amp;mdash; note that even if we control for `\(Z\)`, that does not help, because now we add a collider bias to `\(W\)` related to `\(U\)`
 
 ---
 class: middle
