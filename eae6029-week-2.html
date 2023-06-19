@@ -4,7 +4,7 @@
     <title>EAE-6029: Econometrics I</title>
     <meta charset="utf-8" />
     <meta name="author" content="Pedro Forquesato http://www.pedroforquesato.com Sala 217/FEA2 - pforquesato@usp.br" />
-    <script src="libs/header-attrs-2.21/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.18/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -286,24 +286,6 @@ class: middle
 
 ---
 class: middle
-## Collider bias
-
-This is the idea of the **collider bias**: if `\(A\)` and `\(B\)` are two independent random variables and we have `\(Y = A + B\)`, then conditioning on `\(Y = y\)` suddenly makes `\(A = y - B\)`
-
-While in case (ii) if we do not control for `\(C\)` we have a biased estimate of our causal effects (the classic *omitted variable problem*), in (iii) we have a bias if we *do* control for `\(C\)` (while a simple regression would be unbiased!)
-
-The classical case is the *Pearl's sprinkler example*: `\(A\)` is "it rains", `\(B\)` is (a random) "sprinkler is on", while `\(C\)` is "lawn is wet" &amp;mdash; controlling on `\(C\)`, `\(A\)` now has information on `\(B\)`, because if it does not rain, then I can know for sure that the sprinkler is not on!
-
-
----
-class: middle
-
-&lt;img src="figs/eae6029-2-4.png" width="75%" style="display: block; margin: auto;" /&gt;
-
-An example of *collider bias* from [Cun21]: in the lower panel, we see that there is no correlation between actor's beauty and talent &amp;mdash; but if we condition of whether the actor is a star or not (caused by both), then this relation appears
-
----
-class: middle
 ## Sources of causal bias
 
 .pull-left[ 
@@ -329,10 +311,48 @@ class: middle
 
 ---
 class: middle
+## Collider bias
+
+This is the idea of the **collider bias**: if `\(A\)` and `\(B\)` are two independent random variables and we have `\(Y = A + B\)`, then conditioning on `\(Y = y\)` suddenly makes `\(A = y - B\)`
+
+While in case (ii) if we do not control for `\(C\)` we have a biased estimate of our causal effects (the classic *omitted variable problem*), in (iii) we have a bias if we *do* control for `\(C\)` (while a simple regression would be unbiased!)
+
+The classical case is the *Pearl's sprinkler example*: `\(A\)` is "it rains", `\(B\)` is (a random) "sprinkler is on", while `\(C\)` is "lawn is wet" &amp;mdash; controlling on `\(C\)`, `\(A\)` now has information on `\(B\)`, because if it does not rain, then I can know for sure that the sprinkler is not on!
+
+
+---
+class: middle
+
+&lt;img src="figs/eae6029-2-4.png" width="75%" style="display: block; margin: auto;" /&gt;
+
+An example of *collider bias* from [Cun21]: in the lower panel, we see that there is no correlation between actor's beauty and talent &amp;mdash; but if we condition of whether the actor is a star or not (caused by both), then this relation appears
+
+
+---
+class: middle
+
+&lt;img src="figs/collider.jpg" width="95%" style="display: block; margin: auto;" /&gt;
+
+Another example of collider bias, this time from real research: the effect of a booster shot on a omicron infection is confounded by the problem that people are (presumably) more likely to take a booster if infected, and this affects the reinfection probability &amp;mdash; so we just control for previous infection and we are fine, right? *Wrong*, since that introduces a **collider bias**  [@_MiguelHernan](https://twitter.com/_MiguelHernan/status/1670795479326531585?s=20)
+
+
+---
+class: middle
 
 &lt;img src="figs/eae6029-2-6.png" width="35%" style="display: block; margin: auto;" /&gt;
 
 **Bad controls** can take a subtler form, like in this DAG from [CFP21]: if `\(X\)` is a randomly assigned class size and `\(Y\)` is math test scores, conditioning on reading test scores `\(Z\)` might open up the path from unobservable ability `\(U\)`: `\(X \rightarrow Z \leftarrow U \rightarrow Y\)`
+
+
+---
+class: middle
+# Reverse causality
+
+Another source of causal bias not mentioned above is known as **reverse causality bias**: when we presume that a statistic association (correlation) between `\(A\)` and `\(B\)` means `\(A \rightarrow B\)`, when in fact it is the case that `\(B \rightarrow A\)`
+
+Since causality is mediated by time, reverse causality is usually present only in more coarse types of time data, like yearly aggregate data (GDP, inflation, etc.) in macroeconometrics
+
+But sometimes we can have a two-way causal relations even on the same period through beliefs or expectations
 
 
 ---
