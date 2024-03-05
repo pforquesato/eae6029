@@ -91,5 +91,5 @@ For what folllows, remove age variables and leave only experience and experience
 
 7) Construct a 90% confidence interval for $\widehat{\theta}$.
 
-8) Test whether $\beta_{\text{educ}}$ equals $\beta_{\text{exp}} + 6\beta_{\text{exp}^2}$ using a Wald statistic. Interpret. 
+8) Test (jointly) whether $\beta_{\text{educ}}$ equals $\beta_{\text{exp}} + 6\beta_{\text{exp}^2}$ and $\beta_{\text{educ}}$ for men equals $\beta_{\text{educ}}$ for women using a Wald statistic. Interpret. 
 

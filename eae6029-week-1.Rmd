@@ -420,10 +420,10 @@ An estimator $\widehat{\theta}$ for $\theta$ is **unbiased** if $\mathbb{E}\left
 
 Consider again the linear regression *model*: $Y = X^{\prime}\beta + e$ and $\mathbb{E} \left[ e | X \right] = 0$. Then if the second moments are finite and $XX^{\prime}$ invertible, we have that the **OLS estimator is unbiased**:
 
-$$\mathbb{E} \left[ \widehat{\beta} | X \right] = \mathbb{E} \left[ \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime}\mathbf{Y}\ |\ \mathbf{X} \right]$$
+$$\mathbb{E} \left[ \widehat{\beta} \right] = \mathbb{E} \left[ \mathbb{E} \left[ \widehat{\beta} | X \right] \right] = \mathbb{E} \left[ \mathbb{E} \left[ \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime}\mathbf{Y}\ |\ \mathbf{X} \right] \right]$$
 
 
-$$=  \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime} \mathbb{E} \left[ \mathbf{Y} | \mathbf{X} \right] = \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime}\mathbf{X}\beta = \beta$$
+$$= \mathbb{E} \left[ \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime} \mathbb{E} \left[ \mathbf{Y} | \mathbf{X} \right] \right] = \mathbb{E} \left[ \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime}\mathbf{X} \right] \beta = \beta$$
 
 
 ---
@@ -436,7 +436,7 @@ $$\widehat{\beta} = \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^
 $$\therefore \widehat{\beta} - \beta = \left( \mathbf{X}^{\prime}\mathbf{X}\right)^{-1} \mathbf{X}^{\prime}\mathbf{e}$$
 This expression of the deviation between the OLS estimator and the true parameter, which has conditional expectation zero, will be important when deriving the assymptotic properties of the OLS later in this class
 
-Finally, by the **LIE**, $\mathbb{E} \left[ \widehat{\beta} \right] = \mathbb{E} \left[ \mathbb{E} \left[ \widehat{\beta} | X \right]\right] = 0$ $\blacksquare$
+Finally, by the **LIE**, $\mathbb{E} \left[ \widehat{\beta} - \beta \right] = \mathbb{E} \left[ \mathbb{E} \left[ \widehat{\beta} - \beta | X \right]\right] = 0$ $\blacksquare$
 
 ---
 class: middle
@@ -600,7 +600,7 @@ class: middle, center, inverse
 class: middle
 ## Modes of convergence
 
-A sequence of random vectors $Z_n \in \mathbb{R}^K$ **converges in probability** to a random vector $Z$ (in that case, we say that $Z_n \rightarrow_p Z$ or $\text{plim}_{n \in \mathbb{N}} Z_n = Z$), if for all $\delta > 0$, there is an $\epsilon >0$ and a $N$ such that for all $n > N$: $$\text{Pr}\left( ||Z_n - Z|| \leq \delta \right) > 1 - \epsilon$$
+A sequence of random vectors $Z_n \in \mathbb{R}^K$ **converges in probability** to a random vector $Z$ (in that case, we say that $Z_n \rightarrow_p Z$ or $\text{plim}_{n \in \mathbb{N}} Z_n = Z$), if for all $\delta > 0$, and $\epsilon >0$, there is $N$ such that for all $n > N$: $$\text{Pr}\left( ||Z_n - Z|| \leq \delta \right) > 1 - \epsilon$$
 
 We say that $Z_n$ **converges in distribution** to $Z$, denoted $Z_n \rightarrow_D Z$, or $Z_n \sim_{ass} Z$, if for all $u$ such that $F(u) = \text{Pr}(Z \leq u)$ is continuous, $F_n (u) \rightarrow F(u)$ &mdash; then we say that $F(u)$ is the **asymptotic distribution** of $\{Z_n\}_{n\in \mathbb{N}}$
 
@@ -675,7 +675,7 @@ $$\sqrt{n} \left( \frac{1}{n} \sum_{i=1}^{n} X_ie_i - \mathbb{E} \left[ Xe \righ
 class: middle
 ## Asymptotic normality
 
-Finally, we apply the **Delta Method**:
+Finally, by the bilinearity of variance:
 
 $$\sqrt{n} \left( \widehat{\beta} - \beta \right) \sim_{ass} N\left(0, \mathbf{E} \left[ XX^{\prime}  \right]^{-1} \mathbb{E}\left[ XX^{\prime}e^2\right] \mathbf{E} \left[ XX^{\prime}  \right]^{-1}\right) \ \blacksquare$$
 (As we promised, this also shows that $\widehat{\beta} = \beta + O_p(n^{-1/2})$.) This is the **asymptotic variance-covariance matrix** 
