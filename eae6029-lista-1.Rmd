@@ -1,7 +1,7 @@
 ---
 title: "EAE6029 - Econometria I<br/>Lista 1"
 author: "Prof: Pedro Forquesato<br/>pforquesato@usp.br<br/>Faculdade de Economia, Administração e Contabilidade<br />Universidade de São Paulo"
-date: "2023/1"
+date: "2024/1"
 output:
   prettydoc::html_pretty:
     toc: no
@@ -23,7 +23,7 @@ output:
 
 1) If $\mathbb{E} \left[ Y | X \right] = a + bX$, find $\mathbb{E}\left[ XY \right]$ as a function of moments of $X$.
 
-2) Show that for any function $h(x)$ of the covariates, $\mathbb{E} \left[ h(X)e \right] = 0$ as long as it is finite.
+2) Show that in the linear regression model (see slides) for any function $h(x)$ of the covariates, $\mathbb{E} \left[ h(X)e \right] = 0$ as long as it is finite.
 
 3) True of false. If $Y = X\beta + e$, $X \in \mathbb{R}$ and $\mathbb{E} \left[ Xe \right] = 0$, then $\mathbb{E} \left[ X^2e \right] = 0$
 

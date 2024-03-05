@@ -1,7 +1,7 @@
 ---
 title: "EAE6029 - Econometria I"
 author: "Prof: Pedro Forquesato<br/>pforquesato@usp.br<br/>Faculdade de Economia, Administração e Contabilidade<br />Universidade de São Paulo"
-date: "2023/1"
+date: "2024/1"
 output:
   prettydoc::html_pretty:
     toc: no
@@ -60,6 +60,6 @@ I'll leave the link to schedule office hours at the Moodle website for the cours
 
 ### Teaching assistant
 
-The teaching assistant for this course will be [Vitória Wendt](vitoriawendt@usp.br). Please schedule a weekly session with her.
+The teaching assistant for this course will be [Felipe Santos](felipe.gsantos@usp.br). Please schedule a weekly session with him.
 
 \

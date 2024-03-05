@@ -142,7 +142,7 @@ pointer-events: auto;
 <h1 class="title toc-ignore">EAE6029 - Econometria I<br />Lista 1</h1>
 <h3 class="author">Prof: Pedro Forquesato<br /><a href="mailto:pforquesato@usp.br" class="email">pforquesato@usp.br</a><br />Faculdade de Economia,
 Administração e Contabilidade<br />Universidade de São Paulo</h3>
-<h3 class="date">2023/1</h3>
+<h3 class="date">2024/1</h3>
 </div>
 </header>
 
@@ -163,8 +163,10 @@ Administração e Contabilidade<br />Universidade de São Paulo</h3>
 <li><p>If <span class="math inline">\(\mathbb{E} \left[ Y | X \right] =
 a + bX\)</span>, find <span class="math inline">\(\mathbb{E}\left[ XY
 \right]\)</span> as a function of moments of <span class="math inline">\(X\)</span>.</p></li>
-<li><p>Show that for any function <span class="math inline">\(h(x)\)</span> of the covariates, <span class="math inline">\(\mathbb{E} \left[ h(X)e \right] = 0\)</span> as
-long as it is finite.</p></li>
+<li><p>Show that in the linear regression model (see slides) for any
+function <span class="math inline">\(h(x)\)</span> of the covariates,
+<span class="math inline">\(\mathbb{E} \left[ h(X)e \right] = 0\)</span>
+as long as it is finite.</p></li>
 <li><p>True of false. If <span class="math inline">\(Y = X\beta +
 e\)</span>, <span class="math inline">\(X \in \mathbb{R}\)</span> and
 <span class="math inline">\(\mathbb{E} \left[ Xe \right] = 0\)</span>,
@@ -238,427 +240,177 @@ code</strong> and the results <em>together</em>.</p>
 <span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
 <span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>cps09mar <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">&quot;./cps09mar.dta&quot;</span>)</span>
 <span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(cps09mar, <span class="dv">10</span>))</span></code></pre></div>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col width="5%" />
+<col width="8%" />
+<col width="6%" />
+<col width="12%" />
+<col width="11%" />
+<col width="7%" />
+<col width="6%" />
+<col width="7%" />
+<col width="7%" />
+<col width="8%" />
+<col width="6%" />
+<col width="10%" />
+</colgroup>
 <thead>
-<tr>
-<th style="text-align:right;">
-age
-</th>
-<th style="text-align:right;">
-female
-</th>
-<th style="text-align:right;">
-hisp
-</th>
-<th style="text-align:right;">
-education
-</th>
-<th style="text-align:right;">
-earnings
-</th>
-<th style="text-align:right;">
-hours
-</th>
-<th style="text-align:right;">
-week
-</th>
-<th style="text-align:right;">
-union
-</th>
-<th style="text-align:right;">
-uncov
-</th>
-<th style="text-align:right;">
-region
-</th>
-<th style="text-align:right;">
-race
-</th>
-<th style="text-align:right;">
-marital
-</th>
+<tr class="header">
+<th align="right">age</th>
+<th align="right">female</th>
+<th align="right">hisp</th>
+<th align="right">education</th>
+<th align="right">earnings</th>
+<th align="right">hours</th>
+<th align="right">week</th>
+<th align="right">union</th>
+<th align="right">uncov</th>
+<th align="right">region</th>
+<th align="right">race</th>
+<th align="right">marital</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:right;">
-52
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-146000
-</td>
-<td style="text-align:right;">
-45
-</td>
-<td style="text-align:right;">
-52
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
+<tr class="odd">
+<td align="right">52</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">12</td>
+<td align="right">146000</td>
+<td align="right">45</td>
+<td align="right">52</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
 </tr>
-<tr>
-<td style="text-align:right;">
-38
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-18
-</td>
-<td style="text-align:right;">
-50000
-</td>
-<td style="text-align:right;">
-45
-</td>
-<td style="text-align:right;">
-52
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
+<tr class="even">
+<td align="right">38</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">18</td>
+<td align="right">50000</td>
+<td align="right">45</td>
+<td align="right">52</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
 </tr>
-<tr>
-<td style="text-align:right;">
-38
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-14
-</td>
-<td style="text-align:right;">
-32000
-</td>
-<td style="text-align:right;">
-40
-</td>
-<td style="text-align:right;">
-51
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
+<tr class="odd">
+<td align="right">38</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">14</td>
+<td align="right">32000</td>
+<td align="right">40</td>
+<td align="right">51</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
 </tr>
-<tr>
-<td style="text-align:right;">
-41
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-13
-</td>
-<td style="text-align:right;">
-47000
-</td>
-<td style="text-align:right;">
-40
-</td>
-<td style="text-align:right;">
-52
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
+<tr class="even">
+<td align="right">41</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">13</td>
+<td align="right">47000</td>
+<td align="right">40</td>
+<td align="right">52</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
 </tr>
-<tr>
-<td style="text-align:right;">
-42
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-13
-</td>
-<td style="text-align:right;">
-161525
-</td>
-<td style="text-align:right;">
-50
-</td>
-<td style="text-align:right;">
-52
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
+<tr class="odd">
+<td align="right">42</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">13</td>
+<td align="right">161525</td>
+<td align="right">50</td>
+<td align="right">52</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
 </tr>
-<tr>
-<td style="text-align:right;">
-66
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-13
-</td>
-<td style="text-align:right;">
-33000
-</td>
-<td style="text-align:right;">
-40
-</td>
-<td style="text-align:right;">
-52
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-5
-</td>
+<tr class="even">
+<td align="right">66</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">13</td>
+<td align="right">33000</td>
+<td align="right">40</td>
+<td align="right">52</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">5</td>
 </tr>
-<tr>
-<td style="text-align:right;">
-51
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-16
-</td>
-<td style="text-align:right;">
-37000
-</td>
-<td style="text-align:right;">
-44
-</td>
-<td style="text-align:right;">
-52
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
+<tr class="odd">
+<td align="right">51</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">16</td>
+<td align="right">37000</td>
+<td align="right">44</td>
+<td align="right">52</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
 </tr>
-<tr>
-<td style="text-align:right;">
-49
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-16
-</td>
-<td style="text-align:right;">
-37000
-</td>
-<td style="text-align:right;">
-44
-</td>
-<td style="text-align:right;">
-52
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
+<tr class="even">
+<td align="right">49</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">16</td>
+<td align="right">37000</td>
+<td align="right">44</td>
+<td align="right">52</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
 </tr>
-<tr>
-<td style="text-align:right;">
-33
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-16
-</td>
-<td style="text-align:right;">
-80000
-</td>
-<td style="text-align:right;">
-40
-</td>
-<td style="text-align:right;">
-52
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
+<tr class="odd">
+<td align="right">33</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">16</td>
+<td align="right">80000</td>
+<td align="right">40</td>
+<td align="right">52</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
 </tr>
-<tr>
-<td style="text-align:right;">
-52
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-14
-</td>
-<td style="text-align:right;">
-32000
-</td>
-<td style="text-align:right;">
-40
-</td>
-<td style="text-align:right;">
-52
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
+<tr class="even">
+<td align="right">52</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">14</td>
+<td align="right">32000</td>
+<td align="right">40</td>
+<td align="right">52</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
 </tr>
 </tbody>
 </table>
