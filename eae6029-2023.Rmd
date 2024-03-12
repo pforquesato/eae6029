@@ -43,7 +43,8 @@ Other books that are potentially useful:
 
 ### Grading
 
-Three (3) lists of exercises, graded, **worth 10% of final grade each**, one per topic. One exam, **worth 70% of the final grade**, based on the lists and class material: 5 points applied/interpretative, 1 question from the list with small changes, 1 new analytical question.
+Three (3) lists of exercises, graded, **worth 10% of final grade each**, one per topic. One exam, **worth 70% of the final grade**, based on the lists and class material: 5 points applied/interpretative, 1 question from the list with small changes, 1 new analytic question.
+[[Exam 2023]](https://www.pedroforquesato.com/files/eae6029_prova_2023.pdf)
 
 1. If the final grade $\geq$ 50%: letter grade B or more
 3. Else: second evaluation: second evaluation is another exam (same style). Those with grade > 50% are approved with C; otherwise fail.
