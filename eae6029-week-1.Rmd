@@ -204,9 +204,9 @@ Of course, it still remains open the question of *estimating* the CEF: we know f
 class: middle
 ## The regression variance
 
-The squared CEF error $\sigma^2 \equiv \mathbb{E}\left[e^2\right] = \text{Var}(e)$ is the **variance of the regression error**, and measures the magnitude of *unexplained variation* of $Y$, given $X$
+The squared CEF error $\sigma^2 \equiv \mathbb{E}\left[e^2\right] = \text{Var}(e)$ is the **variance of the regression error**, and measures the magnitude of *unexplained variation* of $Y$ after projecting it on $X$
 
-$\sigma^2$ depends on $X$: if we add regressors, we can never explain less of the variance (at worst, the aditional regressors are useless, never worse than nothing) &mdash; this is reflected in the following important inequality:
+$\sigma^2$ depends on the choice of covariates: if we add regressors, we can never explain less of the variance (at worst, the additional regressors are useless, never worse than nothing) &mdash; this is reflected in the following important inequality:
 
 $$\text{Var}(Y) \geq \text{Var} \left[ Y - \mathbb{E} \left[ Y | X_1 \right] \right] \geq \text{Var} \left[ Y - \mathbb{E} \left[ Y | X_1, X_2 \right]\right]$$
 
