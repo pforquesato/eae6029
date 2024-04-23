@@ -2,7 +2,7 @@
 title: "EAE-6029: Econometrics I"
 author: "Pedro Forquesato<br/>http://www.pedroforquesato.com<br/>Sala 217/FEA2 - pforquesato@usp.br"
 institute: "Departamento de Economia<br/>Universidade de São Paulo"
-date: "2023/1 - Topic 2: Causality and instruments"
+date: "2024/1 - Topic 2: Causality and instruments"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -593,7 +593,7 @@ Before arriving at the IV estimator, we might begin (and you should always begin
 
 $$Y_1 = Z_1^{\prime}\beta_1 + (Z_1^{\prime}\gamma_1 + Z_2^{\prime}\gamma_2 + u)^{\prime}\beta_2 + e$$
 $$\ \ \ \ \ \ \ \ \ \ = Z_1^{\prime}(\beta_1 + \beta_2\gamma_1) + Z_2^{\prime}\beta_2\gamma_2 + (\beta_2u + e)$$
-Therefore, the *reduced regression* linear projection of $Y$ on $Z$, $Y = Z^{\prime}\lambda + v$ identifies the parameters $\lambda_1 = \beta_1 + \beta_2\gamma_1$ and $\lambda_2 = \beta_2\gamma_2$ (note that if $k_2=l_2=1$, then $\beta_2 = \lambda_2/\gamma_2$)
+Therefore, the *reduced regression* linear projection of $Y_1$ on $Z$, $Y_1 = Z^{\prime}\lambda + v$ identifies the parameters $\lambda_1 = \beta_1 + \beta_2\gamma_1$ and $\lambda_2 = \beta_2\gamma_2$ (note that if $k_2=l_2=1$, then $\beta_2 = \lambda_2/\gamma_2$)
 
 ---
 class: middle
@@ -601,11 +601,11 @@ class: middle
 
 We can also estimate the *auxiliary equation* $Y_2 = Z_1\gamma_1 + Z_2\gamma_2 + u$ directly &mdash; we call that the **first stage regression**, to obtain the projection coefficients $\gamma = \mathbb{E}[ZZ^{\prime}]^{-1}\mathbb{E}[Z Y_2^{\prime}]$
 
-Now call $\Gamma$ the total projection on $Y_2$ and $Z_1$ (namely, on $X$): since projecting $Z_1$ on $Z_1$ is themselves, we have that: 
+Now call $\Gamma$ the coefficient matrix of the total projection of $X = [Z_1, Y_2]$ on $Z = [Z_1, Z_2]$: since projecting $Z_1$ on $Z_1$ is themselves, we have that: 
 
-$$\Gamma = \left[ \begin{matrix} I_{k_1} \ \ \ \ \gamma_1 \\ 0_{k_2} \ \ \ \  \gamma_2 \end{matrix} \right]$$
+$$\Gamma = \left[ \begin{matrix} I_{k_1} \ \ \ \ \gamma_1 \\ 0_{l_2} \ \ \ \  \gamma_2 \end{matrix} \right]$$
 
-Remember that the **inclusion restriction** was that $\mathbb{E}[ZX^{\prime}]$ is rank $k$: given linear independent $Z$, this will happen if and only if $\Gamma$ has full rank $k$
+Remember that the **inclusion restriction** was that $\mathbb{E}[ZX^{\prime}]$ is rank $k$: given linear independent $Z$, this will happen if and only if $\Gamma$ has full rank $k$, or namely $\gamma_2$ of size $l_2$ has rank $k_2$
 
 ---
 class: middle
@@ -691,9 +691,9 @@ This gives us a "two-stages" way of calculating the 2SLS estimator: we first reg
 class: middle
 ## Notes
 
-Note that when the model is overidentified, the covariance between residuals and estimands $\widetilde{\mathbf{X}}\widehat{\mathbf{e}} \neq 0$ &mdash; in fact, since it is a linear system with $k$ equations and $l > k$ unknowns, there is *no* solution to the equality
+Note that when the model is overidentified, the covariance between residuals and instruments $\mathbf{Z}\widehat{\mathbf{e}} \neq 0$ &mdash; in fact, since it is a linear system with $k$ equations and $l > k$ unknowns, there is *no* solution to the equality
 
-This will lead to the Generalized Method of Moments estimator, that finds the solution for $\widetilde{\mathbf{X}}\widehat{\mathbf{e}}$ closest to zero &mdash; but that is a topic for EAE-6030
+This will lead to the Generalized Method of Moments estimator, that finds the solution for $\mathbf{Z}\widehat{\mathbf{e}}$ closest to zero &mdash; but that is a topic for EAE-6030
 
 Since we estimate $\widehat{\Gamma}^{\prime}Z$ using the entire sample, it is a function of the auxiliary equation error $u$, which is correlated with the main equation error $e$ &mdash; this leads the 2SLS estimator to be biased (but still consistent!): an improvement is to estimate it with different samples, like the split-sample or leave-one-out IV
 
@@ -817,7 +817,7 @@ Consider the college proximity example, some will always go to college no matter
 
 The identifiable effect of the instrument is on **compliers**, those that are marginal $g(1,U) - g(1,0) = 1$: they will not go to college if they live far, but go if they live close
 
-We also require a **monotonicity condition**: that there are no **defiers**, people that will go to college if they live far, but not if live close &mdash; for all $U$, $h(1, U) > h(0, U)$
+We also require a **monotonicity condition**: that there are no **defiers**, people that will go to college if they live far, but not if live close &mdash; for all $U$, $g(1, U) > g(0, U)$
 
 ---
 class: middle
@@ -828,6 +828,19 @@ We want to know the ATE $\mathbb{E}[Y_i (1) - Y_i (0)]$, but for *always takers*
 This leads us to the **LATE**: $\mathbb{E}[Y_i (1) - Y_i (0)\ | \ X_i(1) > X_i (0)]$, the average treatment effect *on the compliers* &mdash; and so it happens IV is an estimator of LATE; indeed, under monotonicity and $U \perp \!\!\! \perp Z$, LATE equals the Wald estimator:
 
 $$\mathbb{E}[Y_i (1) - Y_i (0)\ | \ X_i(1) - X_i (0) = 1] = \frac{\mathbb{E}[Y | Z = 1] - \mathbb{E}[Y | Z = 0]}{\mathbb{E}[X | Z = 1] - \mathbb{E}[X | Z = 0]}$$
+
+---
+class: middle
+## LATE and IV
+
+Indeed, we can always write $$X = (1 - Z)X(0) + ZX(1) = X(0) + Z\left(X(1) - X(0)\right)$$
+
+Analogously, $Y = Y(0) + XC = Y(0) + X(0)C + ZC\left(X(1) - X(0)\right)$, which gives us, using that $Z \perp \!\!\! \perp U \Rightarrow Z  \perp \!\!\! \perp Y(1), Y(0), X(1), X(0)$  $$\mathbb{E}[Y|Z=1] - \mathbb{E}[Y|Z=0] = \mathbb{E}[C\left(X(1) - X(0)\right)]$$
+
+$$= \mathbb{E}[C\left(X(1) - X(0)\right)| \ X_i(1) - X_i (0) = 1] \Pr(X_i(1) - X_i (0) = 1) $$
+$$+\mathbb{E}[C\left(X(1) - X(0)\right)| \ X_i(1) - X_i (0) = 0] \Pr(X_i(1) - X_i (0) = 0)$$
+$$+\mathbb{E}[C\left(X(1) - X(0)\right)| \ X_i(1) - X_i (0) = -1] \Pr(X_i(1) - X_i (0) = -1) \ \blacksquare$$
+
 ---
 class: middle
 ## Better LATE than never

@@ -4,7 +4,7 @@
     <title>EAE-6029: Econometrics I</title>
     <meta charset="utf-8" />
     <meta name="author" content="Pedro Forquesato http://www.pedroforquesato.com Sala 217/FEA2 - pforquesato@usp.br" />
-    <script src="libs/header-attrs-2.18/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.26/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -22,7 +22,7 @@ class: center, middle, inverse, title-slide
 ### Departamento de Economia<br/>Universidade de São Paulo
 ]
 .date[
-### 2023/1 - Topic 3: Panel data
+### 2024/1 - Topic 3: Panel data
 ]
 
 ---
@@ -126,7 +126,7 @@ Intuitively, we need a way to get rid of *time-invariant* individual-specific fi
 Consider again the standard error component model `\(Y_{it} = X_{it}^{\prime}\beta + u_i + \epsilon_{it}\)`, but let's first-difference the equation, namely `\(\Delta Y_{it} = Y_{it} - Y_{it-1}\)` (this means dropping the first time period):
 
 `$$\Delta Y_{it} = X_{it}^{\prime}\beta + u_i + \epsilon_{it} - \left( X_{it-1}^{\prime}\beta + u_i + \epsilon_{it-1} \right)$$`
-`$$\Rightarrow \Delta Y_{it} = \Delta X_{it}^{\prime} + \Delta \epsilon_{it}$$`
+`$$\Rightarrow \Delta Y_{it} = \Delta X_{it}^{\prime}\beta + \Delta \epsilon_{it}$$`
 
 ---
 class: middle
@@ -176,10 +176,10 @@ class: middle
 
 Further, applying CLT on the last part of the previous equation:
 
-`$$\sqrt{N} \left( \sum_{i=1}^N \check{\mathbf{X}}_i^{\prime}\check{\mathbf{\epsilon}}_i - 0 \right) \sim_{ass} N(\mathbf{0}, \mathbf{\Sigma}_i)$$`
-`$$\sqrt{N} \left(\widehat{\beta}_{\text{fe}} - \beta\right) \sim_{ass} N\left(\mathbf{0}, \left( \sum_{i=1}^{N} \check{\mathbf{X}}_i^{\prime}\check{\mathbf{X}}_i \right)^{-1}\left( \sum_{i=1}^{N} \check{\mathbf{X}}_i^{\prime}\mathbf{\Sigma}_i \check{\mathbf{X}}_i \right) \left( \sum_{i=1}^{N} \check{\mathbf{X}}_i^{\prime}\check{\mathbf{X}}_i \right)^{-1} \right)$$`
+`$$\sqrt{N} \left( \sum_{i=1}^N \check{\mathbf{X}}_i^{\prime}\check{\mathbf{\epsilon}}_i - 0 \right) \sim_{ass} N(\mathbf{0}, \mathbf{\Omega})$$`
+`$$\sqrt{N} \left(\widehat{\beta}_{\text{fe}} - \beta\right) \sim_{ass} N\left(\mathbf{0}, \mathbb{E} \left[ \check{\mathbf{X}}^{\prime}\check{\mathbf{X}} \right]^{-1} \mathbf{\Omega} \mathbb{E} \left[\check{\mathbf{X}}^{\prime}\check{\mathbf{X}} \right]^{-1} \right)$$`
 
-where `\(\Sigma_i = \mathbb{E}[\epsilon_i \epsilon_i^{\prime}|\mathbf{x_i}]\)` is the `\(T \times T\)` conditional covariance matrix of the idiosyncratic errors &amp;mdash; note that assymptotic theory here is on `\(\sqrt{N}\)`, the square root of the number of individuals, not the square root of the total number of observations `\(\sqrt{n}\)` &amp;mdash; that is why we need `\(N &gt;&gt; T\)`
+where `\(\mathbf{\Omega} = \mathbb{E}[\check{\mathbf{X}}^{\prime}\mathbf{\epsilon} \mathbf{\epsilon}^{\prime}\check{\mathbf{X}}]\)` is a `\(T \times T\)` matrix &amp;mdash; note that asymptotic theory here is on `\(\sqrt{N}\)`, the square root of the number of individuals, not the square root of the total number of observations `\(\sqrt{n}\)` &amp;mdash; that is why we need `\(N &gt;&gt; T\)`
 
 ---
 class: middle
