@@ -247,7 +247,7 @@ class: middle
 Usually, we are not interested in the individual-specific error components (the "fixed effects"): we call these *incidental parameters*
 
 But sometimes it might be useful &amp;mdash; then, we could either estimate them directly with the dummy estimator, but often more convenient is to simply calculate them as individual-specific intercepts: 
-`$$\widehat{u}_i = \bar{Y}_{it} - \bar{X}_{it}^{\prime} \widehat{\beta}_{\text{fe}}$$`
+`$$\widehat{u}_i = \bar{Y}_{i} - \bar{X}_{i}^{\prime} \widehat{\beta}_{\text{fe}}$$`
 
 But note that each `\(\widehat{u}_i\)` is basically estimated with `\(T\)` observations: if `\(T\)` is not very large, they will be quite noisy &amp;mdash; some machine learning methods that *trade-off bias and variance* might help
 
